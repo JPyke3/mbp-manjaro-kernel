@@ -13,9 +13,9 @@ _basekernel=5.7
 _basever=57
 _aufs=20200302
 _sub=0
-_rc=rc0
+_rc=rc1
 _commit=ae46d2aa6a7fbe8ca0946f24b061b6ccdc6c3f25
-_shortcommit=${_rc}.d0408.g${_commit:0:7}
+_shortcommit=${_rc}.d0412.g${_commit:0:7}
 pkgver=${_basekernel}${_shortcommit}
 #pkgver=${_basekernel}.${_sub}
 pkgrel=1
@@ -62,10 +62,10 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('a8765e11a6c0c4d6a59a23367c396c16f9a0f2fa0985571bc0e98f6c1a9cc1e9'
-            '6fa7bb5e2276ac763f7fe72309cc40a107ac8202dcd97919d942dc497c5e46e4'
+            '89475fae055c2825e98c3728a5d5da06889ae9ab8fac2762268352fc885cb21b'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            'ef60c4afbae6270748bca1661d054815ea83f84ac3962fa316cd1b6abea506a4'
+            '385018b7c7557b1eda7825ff621b20629d63522d0ddf41e0ae6d55297e21fd78'
             '294d00163a5c68fee26f0adb52ccc309b1d1ae69ed7fe65fdabf29d425798ee4'
             '8e3b0a3c7c9b62d29dc711885ef00578a65f1d0315f31e1d9f438aac1ced02d6'
             '562752375ec67ece529eadf3f003193a371a875bdf6ed842ea8afde0e2e5618f'
