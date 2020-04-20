@@ -11,11 +11,11 @@ pkgname=('linux57' 'linux57-headers')
 _kernelname=-MANJARO
 _basekernel=5.7
 _basever=57
-_aufs=20200302
+_aufs=20200413
 _sub=0
 _rc=rc2
 _commit=ae83d0b416db002fe95601e7f97f64b59514d936
-_shortcommit=${_rc}.d0412.g${_commit:0:7}
+_shortcommit=${_rc}.d0419.g${_commit:0:7}
 pkgver=${_basekernel}${_shortcommit}
 #pkgver=${_basekernel}.${_sub}
 pkgrel=1
@@ -62,17 +62,17 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('b94e20e5afebf0d99b69b8b51bb966b33406495df9671d41f5223383aef29fd5'
-            '6f389eaa6070454ca2b02983239f79fb21f38e815e7822acc01f8f5a23537868'
+            '3e479c9360ef4c10fd3c728bcc653655abbb96104aa5ff2d16d8fd598b8baa41'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            '385018b7c7557b1eda7825ff621b20629d63522d0ddf41e0ae6d55297e21fd78'
-            '294d00163a5c68fee26f0adb52ccc309b1d1ae69ed7fe65fdabf29d425798ee4'
+            'b1c3e07230a1404fa66b7e4600448c37ea6faa7c460b48e5ad79ab7607f873a6'
+            'f3fc55f0726cc11cfd22a5372f488e8984567631c130218cc40ae35c8abd63f7'
             '8e3b0a3c7c9b62d29dc711885ef00578a65f1d0315f31e1d9f438aac1ced02d6'
-            '562752375ec67ece529eadf3f003193a371a875bdf6ed842ea8afde0e2e5618f'
-            '023a61cdf160ca98dc9a0222c1e82c98a1cc09ddfe2c04020a3c30a9b568107e'
-            'eb1aaa49b9d5cdf35985a0803129b39145f81a4f1499f6e7f2afd8d31017b694'
-            '1c69ed79eeef0c0dcf68ce3086a0e372260d2fed94c93c7711e0682b2bcaae39'
-            '29adcb9fac02b77f93ec36c2003ae930cc0a6ee1884d002c280480b5e8f22261'
+            '2ad08bab616dd3a8a0468a0ba3d00c0e7821e395093cc63fa622288e8a2806fb'
+            '3511bf0eb907e850e165d4049432c42525e1c66c99e344005e9d1bde4260b2d2'
+            'bf9499d40618e5f808d15e7317b282373c50473a6aa538a4893bf7277bf5fed7'
+            '9203ec78b9f6000f9f3d094316f355eeab9488847192dca0d6346d159bb17097'
+            '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
