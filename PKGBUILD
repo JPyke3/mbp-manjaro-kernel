@@ -6,6 +6,9 @@
 # Maintainer: Jonathon Fernyhough (i686) <jonathon@manjaro.org>
 # Contributor: Helmut Stult <helmut[at]manjaro[dot]org>
 
+# Cloudbuild Server
+_server=cpx51
+
 pkgbase=linux57
 pkgname=('linux57' 'linux57-headers')
 _kernelname=-MANJARO
@@ -355,6 +358,3 @@ package_linux57-headers() {
     /usr/bin/strip ${_strip} "${_binary}"
   done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
 }
-
-_server=cx51
-
