@@ -250,7 +250,7 @@ package_linux57() {
   pkgdesc="The ${pkgbase/linux/Linux} kernel and modules"
   depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=27')
   optdepends=('crda: to set the correct wireless channels of your country')
-  provides=("linux=${pkgver}")
+  provides=("linux=${pkgver}" VIRTUALBOX-GUEST-MODULES WIREGUARD-MODULE)
 
   cd "${srcdir}/linux-${_basekernel}"
 
