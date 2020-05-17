@@ -21,7 +21,7 @@ _commit=2ef96a5bb12be62ef75b5828c0aab838ebb29cb
 _shortcommit=${_rc}.d0510.g${_commit:0:7}
 pkgver=${_basekernel}${_shortcommit}
 #pkgver=${_basekernel}.${_sub}
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -67,7 +67,7 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('f58519ea25579979710fa94df6ad1f94d5936e1a56a297019f8434c507892acc'
-            'b8ae03e83e03ef3fee8fc18668a337fee2ef1819e663b4dbaf2feaf21ff8486e'
+            '6efcfe209bcbad21ae83d638c3d56fb82ef2ab92518309effefba104d206fb32'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '91e6b93098bce3b38174570f311b05a5cf9064f185c5b05144c7735f48cd8b33'
