@@ -16,12 +16,12 @@ _basekernel=5.7
 _basever=57
 _aufs=20200413
 _sub=0
-_rc=rc5
-_commit=5a9ffb954a3933d7867f4341684a23e008d6839b
-_shortcommit=${_rc}.d0516.g${_commit:0:7}
+_rc=rc6
+_commit=b9bbe6ed63b2b9f2c9ee5cbd0f2c946a2723f4ce
+_shortcommit=${_rc}.d0517.g${_commit:0:7}
 pkgver=${_basekernel}${_shortcommit}
 #pkgver=${_basekernel}.${_sub}
-pkgrel=3
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -45,7 +45,6 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         'vfs-ino.patch'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
-        '0003-x86-Fix-early-boot-crash-on-gcc-10-next-try.patch'
         # MANJARO Patches
         '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0002-apparmor-af_unix-mediation.patch'
@@ -67,8 +66,8 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
-sha256sums=('384842271d855cfc8ff4836e2086d6ad2ea11c0cea5db50c8ef04d5684294a88'
-            'f115e86423f3a37585f3f4fccac262e87f1725bbc7bff84cc6664a8c1fc5f3f1'
+sha256sums=('7c915d06d210a7adbb3bb15f6879d12f9d81350eb6f1319ef5b5f322fe555834'
+            'c786cbddaebfb3beb938dab5362b7f25b5f44d725d306cba50f002b2b8f9ab5d'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             'c1a75fa14d5d6a850630ea55d531f5153581d8694df2064a7dc7e3787a5b676e'
@@ -80,7 +79,6 @@ sha256sums=('384842271d855cfc8ff4836e2086d6ad2ea11c0cea5db50c8ef04d5684294a88'
             '9203ec78b9f6000f9f3d094316f355eeab9488847192dca0d6346d159bb17097'
             '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
-            'b7505c345722c4c1ca27c8d99114d4b8746e530acd9b7c4e5a0601b89bfba2d2'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
@@ -118,9 +116,6 @@ prepare() {
   echo "-------------------------------------------------------------------------------------------------------"
 
   # other fixes by Arch
-  echo "PATCH: 0003-x86-Fix-early-boot-crash-on-gcc-10-next-tr"
-  patch -Np1 -i "${srcdir}/0003-x86-Fix-early-boot-crash-on-gcc-10-next-try.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
 
   # add patches for snapd
   # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
