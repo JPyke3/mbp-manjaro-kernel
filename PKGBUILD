@@ -14,11 +14,11 @@ pkgname=('linux57' 'linux57-headers')
 _kernelname=-MANJARO
 _basekernel=5.7
 _basever=57
-_aufs=20200413
+_aufs=20200518
 _sub=0
-_rc=rc6
-_commit=b9bbe6ed63b2b9f2c9ee5cbd0f2c946a2723f4ce
-_shortcommit=${_rc}.d0517.g${_commit:0:7}
+_rc=rc7
+_commit=9cb1fd0efd195590b828b9b865421ad345a4a145
+_shortcommit=${_rc}.d0524.g${_commit:0:7}
 pkgver=${_basekernel}${_shortcommit}
 #pkgver=${_basekernel}.${_sub}
 pkgrel=1
@@ -66,17 +66,17 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
-sha256sums=('7c915d06d210a7adbb3bb15f6879d12f9d81350eb6f1319ef5b5f322fe555834'
+sha256sums=('16a58749f57155e56637f3a621438b0beb03e1f9f8b977a8bbe3d2c72ff562c4'
             'c786cbddaebfb3beb938dab5362b7f25b5f44d725d306cba50f002b2b8f9ab5d'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            'c1a75fa14d5d6a850630ea55d531f5153581d8694df2064a7dc7e3787a5b676e'
-            'f3fc55f0726cc11cfd22a5372f488e8984567631c130218cc40ae35c8abd63f7'
-            '8e3b0a3c7c9b62d29dc711885ef00578a65f1d0315f31e1d9f438aac1ced02d6'
-            '2ad08bab616dd3a8a0468a0ba3d00c0e7821e395093cc63fa622288e8a2806fb'
-            '3511bf0eb907e850e165d4049432c42525e1c66c99e344005e9d1bde4260b2d2'
-            'bf9499d40618e5f808d15e7317b282373c50473a6aa538a4893bf7277bf5fed7'
-            '9203ec78b9f6000f9f3d094316f355eeab9488847192dca0d6346d159bb17097'
+            'a1c1113980c962ae795815092e901caa50daa6de081804de138afecfdc1a2b38'
+            '0cf385b91049106e2e737b7fcf749bbf3469a5179358bef3a21bf574639c12aa'
+            '54613b757f4765e24827833ecbd3e3b48d6bfa47484e558b0e2104808ab4b631'
+            'ba4d803d68e9f784b765dcc28c9315ae5ada55bde76d48fe9fa859e0b4f3c9e3'
+            '60198f61b1b42574db0130802b64cb4b4b5aee483fa92370959dcdfa8b18545a'
+            'b3ab078413fb0eca600a32a7ae5f61554fd709d4647a109320412828d36bea69'
+            '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
             '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
@@ -111,100 +111,77 @@ prepare() {
   #patch -Np1 -i "${srcdir}/prepatch-${_basekernel}.patch"
 
   # disable USER_NS for non-root users by default
-  echo "PATCH: 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER"
+  msg2 "PATCH: 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER"
   patch -Np1 -i ../0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch
-  echo "-------------------------------------------------------------------------------------------------------"
 
   # other fixes by Arch
 
   # add patches for snapd
   # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
-  echo "PATCH: 0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules"
+  msg "add patches for snapd"
+  msg2 "PATCH: 0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules"
   patch -Np1 -i "${srcdir}/0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0002-apparmor-af_unix-mediation"
+  msg2 "PATCH: 0002-apparmor-af_unix-mediation"
   patch -Np1 -i "${srcdir}/0002-apparmor-af_unix-mediation.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0003-apparmor-fix-use-after-free-in-sk_peer_label"
+  msg2 "PATCH: 0003-apparmor-fix-use-after-free-in-sk_peer_label"
   patch -Np1 -i "${srcdir}/0003-apparmor-fix-use-after-free-in-sk_peer_label.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
+  msg2 "PATCH: 0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
   patch -Np1 -i "${srcdir}/0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
 
   # handling of multiple fans on Lenovo P50
   # https://github.com/vmatare/thinkfan/issues/58
-  echo "PATCH: Thinkpad dual fan control"
+  msg "handling of multiple fans on Lenovo P50"
+  msg2 "PATCH: Thinkpad dual fan control"
   patch -Np1 -i "${srcdir}/0005-thinkpad_acpi_dual_fan_control.patch"
-  echo "-------------------------------------------------------------------------------------------------------"  
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
-  echo "PATCH: 0001-bootsplash"
+  msg "Add bootsplash"
+  msg2 "PATCH: 0001-bootsplash"
   patch -Np1 -i "${srcdir}/0001-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0002-bootsplash"
+  msg2 "PATCH: 0002-bootsplash"
   patch -Np1 -i "${srcdir}/0002-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0003-bootsplash"
+  msg2 "PATCH: 0003-bootsplash"
   patch -Np1 -i "${srcdir}/0003-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0004-bootsplash"
+  msg2 "PATCH: 0004-bootsplash"
   patch -Np1 -i "${srcdir}/0004-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0005-bootsplash"
+  msg2 "PATCH: 0005-bootsplash"
   patch -Np1 -i "${srcdir}/0005-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0006-bootsplash"
+  msg2 "PATCH: 0006-bootsplash"
   patch -Np1 -i "${srcdir}/0006-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0007-bootsplash"
+  msg2 "PATCH: 0007-bootsplash"
   patch -Np1 -i "${srcdir}/0007-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0008-bootsplash"
+  msg2 "PATCH: 0008-bootsplash"
   patch -Np1 -i "${srcdir}/0008-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0009-bootsplash"
+  msg2 "PATCH: 0009-bootsplash"
   patch -Np1 -i "${srcdir}/0009-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0010-bootsplash"
+  msg2 "PATCH: 0010-bootsplash"
   patch -Np1 -i "${srcdir}/0010-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0011-bootsplash"
+  msg2 "PATCH: 0011-bootsplash"
   patch -Np1 -i "${srcdir}/0011-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: 0012-bootsplash"
+  msg2 "PATCH: 0012-bootsplash"
   patch -Np1 -i "${srcdir}/0012-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
   # use git-apply to add binary files
-  echo "PATCH: 0013-bootsplash"
+  msg2 "PATCH: 0013-bootsplash"
   git apply -p1 < "${srcdir}/0013-bootsplash.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
 
   # add aufs5 support
-  echo "PATCH: aufs5.x-rcN-$"
+  msg "add aufs5 support"
+  msg2 "PATCH: aufs5.x-rcN-$"
   patch -Np1 -i "${srcdir}/aufs5.x-rcN-${_aufs}.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: aufs5-base"
+  msg2 "PATCH: aufs5-base"
   patch -Np1 -i "${srcdir}/aufs5-base.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: aufs5-kbuild"
+  msg2 "PATCH: aufs5-kbuild"
   patch -Np1 -i "${srcdir}/aufs5-kbuild.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: aufs5-loopback"
+  msg2 "PATCH: aufs5-loopback"
   patch -Np1 -i "${srcdir}/aufs5-loopback.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: aufs5.x-rcN-$"
+  msg2 "PATCH: aufs5.x-rcN-$"
   patch -Np1 -i "${srcdir}/aufs5-mmap.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: aufs5-standalone"
+  msg2 "PATCH: aufs5-standalone"
   patch -Np1 -i "${srcdir}/aufs5-standalone.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: tmpfs-idr"
+  msg2 "PATCH: tmpfs-idr"
   patch -Np1 -i "${srcdir}/tmpfs-idr.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
-  echo "PATCH: vfs-ino"
+  msg2 "PATCH: vfs-ino"
   patch -Np1 -i "${srcdir}/vfs-ino.patch"
-  echo "-------------------------------------------------------------------------------------------------------"
 
   if [ "${CARCH}" = "x86_64" ]; then
     cat "${srcdir}/config.x86_64" > ./.config
