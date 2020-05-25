@@ -7,7 +7,7 @@
 # Contributor: Helmut Stult <helmut[at]manjaro[dot]org>
 
 # Cloudbuild Server
-_server=cpx51
+_server=cx51
 
 pkgbase=linux57
 pkgname=('linux57' 'linux57-headers')
