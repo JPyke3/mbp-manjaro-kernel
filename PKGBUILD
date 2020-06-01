@@ -6,32 +6,21 @@
 # Maintainer: Jonathon Fernyhough (i686) <jonathon@manjaro.org>
 # Contributor: Helmut Stult <helmut[at]manjaro[dot]org>
 
-# Cloudbuild Server
-_server=cx51
-
 pkgbase=linux57
 pkgname=('linux57' 'linux57-headers')
 _kernelname=-MANJARO
 _basekernel=5.7
 _basever=57
 _aufs=20200518
-_sub=0
-_rc=rc7
-_commit=ffeb595d84811dde16a28b33d8a7cf26d51d51b3
-_shortcommit=${_rc}.d0530.g${_commit:0:7}
-pkgver=${_basekernel}${_shortcommit}
-#pkgver=${_basekernel}.${_sub}
+pkgver=5.7.0
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils' 'git')
 options=('!strip')
-source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
+source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         #"https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
-        #https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/snapshot/linux-stable-rc-$_commit.tar.gz
-        #"linux-${pkgver}.tar.gz::https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-$_commit.tar.gz"
-        "linux-${pkgver}.zip::https://codeload.github.com/torvalds/linux/zip/$_commit"
         # the main kernel config files
         'config.x86_64' 'config' 'config.aufs'
         # AUFS Patches
@@ -66,11 +55,11 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
-sha256sums=('68bf0752f58f770cb4cd62d663b3ae1a7f81600f102db79a657aafe0d138a093'
-            'c786cbddaebfb3beb938dab5362b7f25b5f44d725d306cba50f002b2b8f9ab5d'
+sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
+            'd87f4c64ddde267184fef91edc73aa43f6cd18a284f2547062a57aa48464cc96'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            'a1c1113980c962ae795815092e901caa50daa6de081804de138afecfdc1a2b38'
+            'f860eb7670fbaed8303aad6fe141d296840908680ef3e914de800bd431a7fb1b'
             '0cf385b91049106e2e737b7fcf749bbf3469a5179358bef3a21bf574639c12aa'
             '54613b757f4765e24827833ecbd3e3b48d6bfa47484e558b0e2104808ab4b631'
             'ba4d803d68e9f784b765dcc28c9315ae5ada55bde76d48fe9fa859e0b4f3c9e3'
@@ -98,11 +87,10 @@ sha256sums=('68bf0752f58f770cb4cd62d663b3ae1a7f81600f102db79a657aafe0d138a093'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
             '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
 prepare() {
-  #mv "${srcdir}/linux-stable-rc-${_commit}" "${srcdir}/linux-${_basekernel}"
-  mv "${srcdir}/linux-${_commit}" "${srcdir}/linux-${_basekernel}"
   cd "${srcdir}/linux-${_basekernel}"
 
   # add upstream patch
+  # msg "add upstream patch"
   #patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
@@ -112,20 +100,20 @@ prepare() {
 
   # disable USER_NS for non-root users by default
   msg2 "PATCH: 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER"
-  patch -Np1 -i ../0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch
+  patch -Np1 -i "${srcdir}/0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch"
 
   # other fixes by Arch
 
   # add patches for snapd
   # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
   msg "add patches for snapd"
-  msg2 "PATCH: 0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules"
+  msg2 "0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules"
   patch -Np1 -i "${srcdir}/0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch"
-  msg2 "PATCH: 0002-apparmor-af_unix-mediation"
+  msg2 "0002-apparmor-af_unix-mediation"
   patch -Np1 -i "${srcdir}/0002-apparmor-af_unix-mediation.patch"
-  msg2 "PATCH: 0003-apparmor-fix-use-after-free-in-sk_peer_label"
+  msg2 "0003-apparmor-fix-use-after-free-in-sk_peer_label"
   patch -Np1 -i "${srcdir}/0003-apparmor-fix-use-after-free-in-sk_peer_label.patch"
-  msg2 "PATCH: 0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
+  msg2 "0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
   patch -Np1 -i "${srcdir}/0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch"
 
   # handling of multiple fans on Lenovo P50
@@ -136,51 +124,51 @@ prepare() {
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
   msg "Add bootsplash"
-  msg2 "PATCH: 0001-bootsplash"
+  msg2 "0001-bootsplash."
   patch -Np1 -i "${srcdir}/0001-bootsplash.patch"
-  msg2 "PATCH: 0002-bootsplash"
+  msg2 "0002-bootsplash."
   patch -Np1 -i "${srcdir}/0002-bootsplash.patch"
-  msg2 "PATCH: 0003-bootsplash"
+  msg2 "0003-bootsplash."
   patch -Np1 -i "${srcdir}/0003-bootsplash.patch"
-  msg2 "PATCH: 0004-bootsplash"
+  msg2 "0004-bootsplash."
   patch -Np1 -i "${srcdir}/0004-bootsplash.patch"
-  msg2 "PATCH: 0005-bootsplash"
+  msg2 "0005-bootsplash."
   patch -Np1 -i "${srcdir}/0005-bootsplash.patch"
-  msg2 "PATCH: 0006-bootsplash"
+  msg2 "0006-bootsplash."
   patch -Np1 -i "${srcdir}/0006-bootsplash.patch"
-  msg2 "PATCH: 0007-bootsplash"
+  msg2 "0007-bootsplash."
   patch -Np1 -i "${srcdir}/0007-bootsplash.patch"
-  msg2 "PATCH: 0008-bootsplash"
+  msg2 "0008-bootsplash."
   patch -Np1 -i "${srcdir}/0008-bootsplash.patch"
-  msg2 "PATCH: 0009-bootsplash"
+  msg2 "0009-bootsplash."
   patch -Np1 -i "${srcdir}/0009-bootsplash.patch"
-  msg2 "PATCH: 0010-bootsplash"
+  msg2 "0010-bootsplash."
   patch -Np1 -i "${srcdir}/0010-bootsplash.patch"
-  msg2 "PATCH: 0011-bootsplash"
+  msg2 "0011-bootsplash."
   patch -Np1 -i "${srcdir}/0011-bootsplash.patch"
-  msg2 "PATCH: 0012-bootsplash"
+  msg2 "0012-bootsplash."
   patch -Np1 -i "${srcdir}/0012-bootsplash.patch"
   # use git-apply to add binary files
-  msg2 "PATCH: 0013-bootsplash"
+  msg2 "0013-bootsplash."
   git apply -p1 < "${srcdir}/0013-bootsplash.patch"
 
   # add aufs5 support
   msg "add aufs5 support"
-  msg2 "PATCH: aufs5.x-rcN-$"
+  msg2 "aufs5.x-rcN-${_aufs}"
   patch -Np1 -i "${srcdir}/aufs5.x-rcN-${_aufs}.patch"
-  msg2 "PATCH: aufs5-base"
+  msg2 "aufs5-base"
   patch -Np1 -i "${srcdir}/aufs5-base.patch"
-  msg2 "PATCH: aufs5-kbuild"
+  msg2 "aufs5-kbuild"
   patch -Np1 -i "${srcdir}/aufs5-kbuild.patch"
-  msg2 "PATCH: aufs5-loopback"
+  msg2 "aufs5-loopback"
   patch -Np1 -i "${srcdir}/aufs5-loopback.patch"
-  msg2 "PATCH: aufs5.x-rcN-$"
+  msg2 "aufs5-mmap"
   patch -Np1 -i "${srcdir}/aufs5-mmap.patch"
-  msg2 "PATCH: aufs5-standalone"
+  msg2 "aufs5-standalone"
   patch -Np1 -i "${srcdir}/aufs5-standalone.patch"
-  msg2 "PATCH: tmpfs-idr"
+  msg2 "tmpfs-idr"
   patch -Np1 -i "${srcdir}/tmpfs-idr.patch"
-  msg2 "PATCH: vfs-ino"
+  msg2 "vfs-ino"
   patch -Np1 -i "${srcdir}/vfs-ino.patch"
 
   if [ "${CARCH}" = "x86_64" ]; then
@@ -196,16 +184,14 @@ prepare() {
     sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
   fi
 
-  # set patchlevel to 7
-  sed -ri "s|^(PATCHLEVEL =).*|\1 7|" Makefile
-
-  # set extraversion to pkgrel
+  msg "set extraversion to pkgrel"
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
 
-  # don't run depmod on 'make install'. We'll do this ourselves in packaging
+  msg "don't run depmod on 'make install'"
+  # We'll do this ourselves in packaging
   sed -i '2iexit 0' scripts/depmod.sh
 
-  # get kernel version
+  msg "get kernel version"
   make prepare
 
   # load configuration
@@ -216,14 +202,14 @@ prepare() {
   #make oldconfig # using old config from previous kernel version
   # ... or manually edit .config
 
-  # rewrite configuration
+  msg "rewrite configuration"
   yes "" | make config >/dev/null
 }
 
 build() {
   cd "${srcdir}/linux-${_basekernel}"
 
-  # build!
+  msg "build"
   make ${MAKEFLAGS} LOCALVERSION= bzImage modules
 }
 
@@ -347,3 +333,5 @@ package_linux57-headers() {
     /usr/bin/strip ${_strip} "${_binary}"
   done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
 }
+
+_server=cpx51
