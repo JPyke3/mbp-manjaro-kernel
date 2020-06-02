@@ -13,7 +13,7 @@ _basekernel=5.7
 _basever=57
 _aufs=20200518
 pkgver=5.7.0
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -56,7 +56,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
-            'd87f4c64ddde267184fef91edc73aa43f6cd18a284f2547062a57aa48464cc96'
+            '6e7e1f5402024fcafb529f44d0384cdfa5dbb36a6c447a6f6c3d68f300ce5f3c'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             'f860eb7670fbaed8303aad6fe141d296840908680ef3e914de800bd431a7fb1b'
