@@ -13,7 +13,7 @@ _basekernel=5.7
 _basever=57
 _aufs=20200518
 pkgver=5.7.0
-pkgrel=2
+pkgrel=3
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -35,6 +35,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
         # MANJARO Patches
+        '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
         '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
@@ -56,7 +57,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
-            '6e7e1f5402024fcafb529f44d0384cdfa5dbb36a6c447a6f6c3d68f300ce5f3c'
+            'da9a110e1a21000c053fbdd00faf610f9b0b510ecf62f6d51dd661a9df708e7a'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             'f860eb7670fbaed8303aad6fe141d296840908680ef3e914de800bd431a7fb1b'
@@ -68,6 +69,7 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
             '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
+            '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
@@ -121,6 +123,9 @@ prepare() {
   msg "handling of multiple fans on Lenovo P50"
   msg2 "PATCH: Thinkpad dual fan control"
   patch -Np1 -i "${srcdir}/0005-thinkpad_acpi_dual_fan_control.patch"
+
+  # https://bugzilla.kernel.org/show_bug.cgi?id=207585
+  patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
   msg "Add bootsplash"
