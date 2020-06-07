@@ -13,14 +13,14 @@ _basekernel=5.7
 _basever=57
 _aufs=20200518
 pkgver=5.7.1
-pkgrel=1
+pkgrel=2
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils' 'git')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
-        #"https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
+        "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         # the main kernel config files
         'config.x86_64' 'config' 'config.aufs'
         # AUFS Patches
@@ -57,10 +57,11 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
+            'febbb12fde35d754628930805f696d692d5e17fcea34469b96a81072b9dd7179'
             'da9a110e1a21000c053fbdd00faf610f9b0b510ecf62f6d51dd661a9df708e7a'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            'f860eb7670fbaed8303aad6fe141d296840908680ef3e914de800bd431a7fb1b'
+            '92673a32c25851f8cd470fa2cd251f3c4407c3eb9376ad44196352a9350d1d4d'
             '0cf385b91049106e2e737b7fcf749bbf3469a5179358bef3a21bf574639c12aa'
             '54613b757f4765e24827833ecbd3e3b48d6bfa47484e558b0e2104808ab4b631'
             'ba4d803d68e9f784b765dcc28c9315ae5ada55bde76d48fe9fa859e0b4f3c9e3'
@@ -92,8 +93,8 @@ prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
   # add upstream patch
-  # msg "add upstream patch"
-  #patch -p1 -i "${srcdir}/patch-${pkgver}"
+  msg "add upstream patch"
+  patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
