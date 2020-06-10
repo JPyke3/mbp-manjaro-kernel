@@ -13,14 +13,14 @@ _basekernel=5.7
 _basever=57
 _aufs=20200518
 pkgver=5.7.1
-pkgrel=1
+pkgrel=3
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils' 'git')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
-        #"https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
+        "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         # the main kernel config files
         'config.x86_64' 'config' 'config.aufs'
         # AUFS Patches
@@ -35,6 +35,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
         # MANJARO Patches
+        '0001-nonupstream-navi10-vfio-reset.patch'
+        '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
         '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0002-apparmor-af_unix-mediation.patch'
@@ -42,6 +44,17 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
         # Lenovo P50 multiple fans
         '0005-thinkpad_acpi_dual_fan_control.patch::https://github.com/dvhart/linux-pdx86/commit/26c16f9d956f269bbc32e034e3ec11c4831137de.patch'
+        # Oracle
+        '0001-linux-dmjordan.git-5caab6aa6a673469e451ecdd018c5a42b2fb1f10.patch'
+        '0002-linux-dmjordan.git-018908fd0f9a56156bc34bc86781a7877c3d4d20.patch'
+        '0003-linux-dmjordan.git-14beeebb8bff7b5f1baed7648a0e050d7a74012e.patch'
+        '0004-linux-dmjordan.git-62075c45f01af2c4c1fc6f315bd7cfc9c3a3c1ee.patch'
+        '0005-linux-dmjordan.git-5d7bb66ae309681715b44acdc8d17c450592e77a.patch'
+        '0006-linux-dmjordan.git-e26200a16b12befc4f2be816ef1f6f0a0b34653d.patch'
+        '0007-linux-dmjordan.git-0e955dc47a08815500de2f559d0e6781622cbbf2.patch'
+        '0008-linux-dmjordan.git-09828a28b104334ea5d1744fdfb525bfc51549b3.patch'
+        '0009-linux-dmjordan.git-b87c24b69608305c65161165eb07460ecddb8a70.patch'
+        '0010-linux-dmjordan.git-dacbf15ae1e2027e71eb1ef45ea4d831189923dc.patch'
         # Bootsplash
         '0001-bootsplash.patch'
         '0002-bootsplash.patch'
@@ -57,7 +70,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
-            'da9a110e1a21000c053fbdd00faf610f9b0b510ecf62f6d51dd661a9df708e7a'
+            'febbb12fde35d754628930805f696d692d5e17fcea34469b96a81072b9dd7179'
+            'eb090be2d7cdf3ca985bdd055c405a5c67c68560e7ed79b3f4a67a0a63afee67'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             'f860eb7670fbaed8303aad6fe141d296840908680ef3e914de800bd431a7fb1b'
@@ -69,12 +83,24 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
             '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
+            '7a2758f86dd1339f0f1801de2dbea059b55bf3648e240878b11e6d6890d3089c'
+            '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
             'f93707e75ec6be5f289605f913e59d4f3514524a1aab3368f49bf6789723d443'
+            'b1a652de71740444bc111056921d4cdce9cca03c54d1ef1533355482621b3097'
+            'bd54f08a4bb4ef63585c3a995e7554635dd275aa22f08dc8fea5ca4267736771'
+            'c0f407f3860609326a7415c9bbda2c5e39a0a97ea9e831d0ab82f2f7a3480614'
+            'b8dfcc90b0233947b4d44bf8dd207024df7f02b80faaab4111e4c49a198cc725'
+            '6d778ef836f4e65b5822f501d70acdae63f20ba6934d070f360cbe0e4575e6c2'
+            '5b379366b7e122052cf9ae8e794c8049e92313b060f0493a669602e9e15d46e4'
+            '6e3974c6e4e2702097ed2538acc4b8cd1577445738e41368b12191e016ab4489'
+            '3fd57bbf4a5b17b3d058f667e9b34b9ed378523985abb15f6d394ae50b2fcc3d'
+            '740c9bb706cb7abcbde245df782b945bbe5cdda017d4b94b6044b1db487858e2'
+            'eb927a0d698b49632ad0f85b84a18173866d51719c9d2057080189b7747f5fcb'
             'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
@@ -93,7 +119,7 @@ prepare() {
 
   # add upstream patch
   # msg "add upstream patch"
-  #patch -p1 -i "${srcdir}/patch-${pkgver}"
+  patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
@@ -106,6 +132,28 @@ prepare() {
 
   # other fixes by Arch
 
+  msg "oracle patches"
+  msg2 "0001-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0001-linux-dmjordan.git-5caab6aa6a673469e451ecdd018c5a42b2fb1f10.patch"
+  msg2 "0002-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0002-linux-dmjordan.git-018908fd0f9a56156bc34bc86781a7877c3d4d20.patch"
+  msg2 "0003-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0003-linux-dmjordan.git-14beeebb8bff7b5f1baed7648a0e050d7a74012e.patch"
+  msg2 "0004-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0004-linux-dmjordan.git-62075c45f01af2c4c1fc6f315bd7cfc9c3a3c1ee.patch"
+  msg2 "0005-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0005-linux-dmjordan.git-5d7bb66ae309681715b44acdc8d17c450592e77a.patch"
+  msg2 "0006-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0006-linux-dmjordan.git-e26200a16b12befc4f2be816ef1f6f0a0b34653d.patch"
+  msg2 "0007-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0007-linux-dmjordan.git-0e955dc47a08815500de2f559d0e6781622cbbf2.patch"
+  msg2 "0008-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0008-linux-dmjordan.git-09828a28b104334ea5d1744fdfb525bfc51549b3.patch"
+  msg2 "0009-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0009-linux-dmjordan.git-b87c24b69608305c65161165eb07460ecddb8a70.patch"
+  msg2 "0010-linux-dmjordan"
+  patch -Np1 -i "${srcdir}/0010-linux-dmjordan.git-dacbf15ae1e2027e71eb1ef45ea4d831189923dc.patch"
+
   # add patches for snapd
   # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
   msg "add patches for snapd"
@@ -117,6 +165,17 @@ prepare() {
   patch -Np1 -i "${srcdir}/0003-apparmor-fix-use-after-free-in-sk_peer_label.patch"
   msg2 "0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
   patch -Np1 -i "${srcdir}/0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch"
+
+  msg "navi10-vfio reset patch"
+  # TODO: remove when AMD properly fixes it!
+  # INFO: this is a hack and won't be upstreamed
+  # https://forum.level1techs.com/t/145666/86
+  # https://forum.manjaro.org/t/107820/11
+  patch -Np1 -i "${srcdir}/0001-nonupstream-navi10-vfio-reset.patch"
+
+  msg "nuvoton hwmon driver patch"
+  # https://twitter.com/vskye11/status/1216240051639791616
+  patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
 
   # handling of multiple fans on Lenovo P50
   # https://github.com/vmatare/thinkfan/issues/58
