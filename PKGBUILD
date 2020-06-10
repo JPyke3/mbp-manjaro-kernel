@@ -38,7 +38,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0001-nonupstream-navi10-vfio-reset.patch'
         '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
-        '0001-renoir-backlight.patch'
         '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
@@ -188,9 +187,6 @@ prepare() {
   # https://bugzilla.kernel.org/show_bug.cgi?id=207585
   msg "handling of multiple fans on Lenovo P50"
   patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
-
-  msg "renoir-backlight patch"
-  patch -Np1 -i "${srcdir}/0001-renoir-backlight.patch"
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
   msg "Add bootsplash"
