@@ -5,7 +5,7 @@ index d53c60b37cc6f..f42e7e67ddba4 100644
 @@ -1356,7 +1356,7 @@ static int dm_late_init(void *handle)
  	unsigned int linear_lut[16];
  	int i;
- 	struct dmcu *dmcu = NULL;
+ 	struct dmcu *dmcu = adev->dm.dc->res_pool->dmcu;
 -	bool ret = false;
 +	bool ret;
  
