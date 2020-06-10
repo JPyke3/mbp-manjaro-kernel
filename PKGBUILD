@@ -12,8 +12,8 @@ _kernelname=-MANJARO
 _basekernel=5.7
 _basever=57
 _aufs=20200518
-pkgver=5.7.1
-pkgrel=3
+pkgver=5.7.2
+pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -38,6 +38,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0001-nonupstream-navi10-vfio-reset.patch'
         '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
+        '0001-renoir-backlight.patch'
         '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
@@ -70,11 +71,11 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
-            'febbb12fde35d754628930805f696d692d5e17fcea34469b96a81072b9dd7179'
+            '6d1f86937ae202b25e4a9c3b9cd87c7da520af7000b4f271ac379282afa9b8d5'
             'eb090be2d7cdf3ca985bdd055c405a5c67c68560e7ed79b3f4a67a0a63afee67'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            '92673a32c25851f8cd470fa2cd251f3c4407c3eb9376ad44196352a9350d1d4d'
+            '506aec51f528cd610003c9d92e61276803cc342d9cf5319560697fb7ee6c7658'
             '0cf385b91049106e2e737b7fcf749bbf3469a5179358bef3a21bf574639c12aa'
             '54613b757f4765e24827833ecbd3e3b48d6bfa47484e558b0e2104808ab4b631'
             'ba4d803d68e9f784b765dcc28c9315ae5ada55bde76d48fe9fa859e0b4f3c9e3'
@@ -86,6 +87,7 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
             '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
+            '0a622c4ec7f6836d703f0583faf8ed5c9a23db9695f11676888e8e4204b25398'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
@@ -184,7 +186,11 @@ prepare() {
   patch -Np1 -i "${srcdir}/0005-thinkpad_acpi_dual_fan_control.patch"
 
   # https://bugzilla.kernel.org/show_bug.cgi?id=207585
+  msg "handling of multiple fans on Lenovo P50"
   patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
+
+  msg "renoir-backlight patch"
+  patch -Np1 -i "${srcdir}/0001-renoir-backlight.patch"
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
   msg "Add bootsplash"
