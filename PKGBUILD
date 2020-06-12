@@ -8,6 +8,8 @@
 
 pkgbase=linux58
 pkgname=('linux58' 'linux58-headers')
+pkgver=5.8rc0.d0612.gb791d1b
+pkgrel=1
 _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
@@ -16,8 +18,6 @@ _rc=rc0
 _commit=b791d1bdf9212d944d749a5c7ff6febdba241771
 _shortcommit=${_rc}.d0612.g${_commit:0:7}
 _pkgver=${_basekernel}${_shortcommit}
-pkgver=5.8rc0.d0612.gb791d1b
-pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
