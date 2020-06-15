@@ -6,17 +6,20 @@
 # Maintainer: Jonathon Fernyhough (i686) <jonathon@manjaro.org>
 # Contributor: Helmut Stult <helmut[at]manjaro[dot]org>
 
+# Cloud Server
+_server=cpx51
+
 pkgbase=linux58
 pkgname=('linux58' 'linux58-headers')
-pkgver=5.8rc0.d0612.gb791d1b
+pkgver=5.8rc1.d0614.gb3a9e3b
 pkgrel=1
 _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
 _aufs=20200518
-_rc=rc0
-_commit=b791d1bdf9212d944d749a5c7ff6febdba241771
-_shortcommit=${_rc}.d0612.g${_commit:0:7}
+_rc=rc1
+_commit=b3a9e3b9622ae10064826dccb4f7a52bd88c7407
+_shortcommit=${_rc}.d0614.g${_commit:0:7}
 _pkgver=${_basekernel}${_shortcommit}
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
@@ -52,8 +55,8 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
-sha256sums=('2aa8444ac5841e3d911fdef071d2328377bc6de7e5bc9fea22b28264a19d762a'
-            '3c56b2f2ae8f7ea27049b6aa95846a143324d7ab43d1a47d9af09c2cc21d8c66'
+sha256sums=('cae5b6b65c4f2d68d94d0888a7a84beb1b7098913aaaf9eafcf4b71b99b8e762'
+            'b16b90a194f6180ca99e06b14f04ddc78e0902183b67cfecb8d2cc38873ee62f'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
@@ -320,5 +323,3 @@ package_linux58-headers() {
     /usr/bin/strip ${_strip} "${_binary}"
   done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
 }
-
-_server=cpx51
