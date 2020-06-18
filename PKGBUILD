@@ -12,12 +12,19 @@ _kernelname=-MANJARO
 _basekernel=5.7
 _basever=57
 _aufs=20200518
-pkgver=5.7.3
+pkgver=5.7.4
 pkgrel=1
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils' 'git')
+makedepends=('bc'
+    'docbook-xsl'
+    'elfutils'
+    'git'
+    'inetutils'
+    'kmod'
+    'pahole'
+    'xmlto')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
@@ -71,7 +78,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
-            '2f007850373cb63198ac35b645803f8923586d21f3898d2069b6f080628cf0d2'
+            'd5794fbd4b6c5281dc6c94f6f30c5e896140f1fbc1ba3458824c26f8f1853591'
             'eb090be2d7cdf3ca985bdd055c405a5c67c68560e7ed79b3f4a67a0a63afee67'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
@@ -298,7 +305,7 @@ package_linux57() {
   _kernver="$(make LOCALVERSION= kernelrelease)"
 
   mkdir -p "${pkgdir}"/{boot,usr/lib/modules}
-  make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}/usr" modules_install
+  make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}/usr" INSTALL_MOD_STRIP=1 modules_install
 
   # systemd expects to find the kernel here to allow hibernation
   # https://github.com/systemd/systemd/commit/edda44605f06a41fb86b7ab8128dcf99161d2344
@@ -404,5 +411,8 @@ package_linux57-headers() {
     /usr/bin/strip ${_strip} "${_binary}"
   done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
 }
+
+# stripping vmlinux
+strip -v $STRIP_STATIC "$builddir/vmlinux"
 
 _server=cpx51
