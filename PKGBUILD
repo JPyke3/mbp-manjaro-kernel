@@ -79,7 +79,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'd5794fbd4b6c5281dc6c94f6f30c5e896140f1fbc1ba3458824c26f8f1853591'
-            'eb090be2d7cdf3ca985bdd055c405a5c67c68560e7ed79b3f4a67a0a63afee67'
+            '5181dc08304642a58012614c23a9498deb07d68c891422ea5fd0608e6b4dc722'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '506aec51f528cd610003c9d92e61276803cc342d9cf5319560697fb7ee6c7658'
@@ -411,8 +411,5 @@ package_linux57-headers() {
     /usr/bin/strip ${_strip} "${_binary}"
   done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
 }
-
-# stripping vmlinux
-strip -v $STRIP_STATIC "$builddir/vmlinux"
 
 _server=cpx51
