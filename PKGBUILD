@@ -52,17 +52,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
         # Lenovo P50 multiple fans
         '0005-thinkpad_acpi_dual_fan_control.patch::https://github.com/dvhart/linux-pdx86/commit/26c16f9d956f269bbc32e034e3ec11c4831137de.patch'
-        # Oracle
-        '0001-linux-dmjordan.git-5caab6aa6a673469e451ecdd018c5a42b2fb1f10.patch'
-        '0002-linux-dmjordan.git-018908fd0f9a56156bc34bc86781a7877c3d4d20.patch'
-        '0003-linux-dmjordan.git-14beeebb8bff7b5f1baed7648a0e050d7a74012e.patch'
-        '0004-linux-dmjordan.git-62075c45f01af2c4c1fc6f315bd7cfc9c3a3c1ee.patch'
-        '0005-linux-dmjordan.git-5d7bb66ae309681715b44acdc8d17c450592e77a.patch'
-        '0006-linux-dmjordan.git-e26200a16b12befc4f2be816ef1f6f0a0b34653d.patch'
-        '0007-linux-dmjordan.git-0e955dc47a08815500de2f559d0e6781622cbbf2.patch'
-        '0008-linux-dmjordan.git-09828a28b104334ea5d1744fdfb525bfc51549b3.patch'
-        '0009-linux-dmjordan.git-b87c24b69608305c65161165eb07460ecddb8a70.patch'
-        '0010-linux-dmjordan.git-dacbf15ae1e2027e71eb1ef45ea4d831189923dc.patch'
         # Bootsplash
         '0001-bootsplash.patch'
         '0002-bootsplash.patch'
@@ -100,16 +89,6 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
             'f93707e75ec6be5f289605f913e59d4f3514524a1aab3368f49bf6789723d443'
-            'b1a652de71740444bc111056921d4cdce9cca03c54d1ef1533355482621b3097'
-            'bd54f08a4bb4ef63585c3a995e7554635dd275aa22f08dc8fea5ca4267736771'
-            'c0f407f3860609326a7415c9bbda2c5e39a0a97ea9e831d0ab82f2f7a3480614'
-            'b8dfcc90b0233947b4d44bf8dd207024df7f02b80faaab4111e4c49a198cc725'
-            '6d778ef836f4e65b5822f501d70acdae63f20ba6934d070f360cbe0e4575e6c2'
-            '5b379366b7e122052cf9ae8e794c8049e92313b060f0493a669602e9e15d46e4'
-            '6e3974c6e4e2702097ed2538acc4b8cd1577445738e41368b12191e016ab4489'
-            '3fd57bbf4a5b17b3d058f667e9b34b9ed378523985abb15f6d394ae50b2fcc3d'
-            '740c9bb706cb7abcbde245df782b945bbe5cdda017d4b94b6044b1db487858e2'
-            'eb927a0d698b49632ad0f85b84a18173866d51719c9d2057080189b7747f5fcb'
             'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
@@ -140,28 +119,6 @@ prepare() {
   patch -Np1 -i "${srcdir}/0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch"
 
   # other fixes by Arch
-
-  msg "oracle patches"
-  msg2 "0001-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0001-linux-dmjordan.git-5caab6aa6a673469e451ecdd018c5a42b2fb1f10.patch"
-  msg2 "0002-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0002-linux-dmjordan.git-018908fd0f9a56156bc34bc86781a7877c3d4d20.patch"
-  msg2 "0003-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0003-linux-dmjordan.git-14beeebb8bff7b5f1baed7648a0e050d7a74012e.patch"
-  msg2 "0004-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0004-linux-dmjordan.git-62075c45f01af2c4c1fc6f315bd7cfc9c3a3c1ee.patch"
-  msg2 "0005-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0005-linux-dmjordan.git-5d7bb66ae309681715b44acdc8d17c450592e77a.patch"
-  msg2 "0006-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0006-linux-dmjordan.git-e26200a16b12befc4f2be816ef1f6f0a0b34653d.patch"
-  msg2 "0007-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0007-linux-dmjordan.git-0e955dc47a08815500de2f559d0e6781622cbbf2.patch"
-  msg2 "0008-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0008-linux-dmjordan.git-09828a28b104334ea5d1744fdfb525bfc51549b3.patch"
-  msg2 "0009-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0009-linux-dmjordan.git-b87c24b69608305c65161165eb07460ecddb8a70.patch"
-  msg2 "0010-linux-dmjordan"
-  patch -Np1 -i "${srcdir}/0010-linux-dmjordan.git-dacbf15ae1e2027e71eb1ef45ea4d831189923dc.patch"
 
   # add patches for snapd
   # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
