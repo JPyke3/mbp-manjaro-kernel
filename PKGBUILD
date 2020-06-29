@@ -11,15 +11,15 @@ _server=cpx51
 
 pkgbase=linux58
 pkgname=('linux58' 'linux58-headers')
-pkgver=5.8rc2.d0621.g4877846
+pkgver=5.8rc3.d0628.g9ebcfad
 pkgrel=1
 _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
-_aufs=20200518
-_rc=rc2
-_commit=48778464bb7d346b47157d21ffde2af6b2d39110
-_shortcommit=${_rc}.d0621.g${_commit:0:7}
+_aufs=20200622
+_rc=rc3
+_commit=9ebcfadb0610322ac537dd7aa5d9cbc2b2894c68
+_shortcommit=${_rc}.d0628.g${_commit:0:7}
 _pkgver=${_basekernel}${_shortcommit}
 arch=('i686' 'x86_64')
 url="http://www.kernel.org/"
@@ -55,8 +55,8 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
-sha256sums=('400833ecadf666cf6eb132c40651ae0e34210089744c3470bddf10076f7bb845'
-            'b16b90a194f6180ca99e06b14f04ddc78e0902183b67cfecb8d2cc38873ee62f'
+sha256sums=('7deee3b4a0e4ef130337c59f8c832c2dbbf17eaecf587efb0f3c4546db430bbe'
+            'fc2236cfc589b72346584ed8a48ef5826b02b0598c08445e1b05fb1709ce55c4'
             'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
@@ -100,8 +100,7 @@ prepare() {
   msg2 "PATCH: 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER"
   patch -Np1 -i "${srcdir}/0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch"
 
-  # other patches
-
+  # other fixes by Arch
 
   # add patches for snapd
   # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
