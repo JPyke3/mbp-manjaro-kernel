@@ -1,27 +1,26 @@
-# Based on the file created for Arch Linux by:
+# Maintainer: Philip Müller <philm[at]manjaro[dot]org>
+# Maintainer: Helmut Stult <helmut[at]manjaro[dot]org>
+
+# Arch credits:
 # Tobias Powalowski <tpowa@archlinux.org>
 # Thomas Baechler <thomas@archlinux.org>
-
-# Maintainer: Philip Müller (x86_64) <philm@manjaro.org>
-# Maintainer: Jonathon Fernyhough (i686) <jonathon@manjaro.org>
-# Contributor: Helmut Stult <helmut[at]manjaro[dot]org>
 
 # Cloud Server
 _server=cpx51
 
 pkgbase=linux58
 pkgname=('linux58' 'linux58-headers')
-pkgver=5.8rc3.d0701.gcd77006
+pkgver=5.8rc4.d0705.gdcb7fd8
 pkgrel=1
 _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
 _aufs=20200622
-_rc=rc3
-_commit=cd77006e01b3198c75fb7819b3d0ff89709539bb
-_shortcommit=${_rc}.d0701.g${_commit:0:7}
+_rc=rc4
+_commit=dcb7fd82c75ee2d6e6f9d8cc71c52519ed52e258
+_shortcommit=${_rc}.d0705.g${_commit:0:7}
 _pkgver=${_basekernel}${_shortcommit}
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils' 'git')
@@ -30,7 +29,7 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         #"https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         "linux-${_pkgver}.zip::https://codeload.github.com/torvalds/linux/zip/$_commit"
         # the main kernel config files
-        'config.x86_64' 'config'
+        'config'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
         # MANJARO Patches
@@ -55,9 +54,8 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
-sha256sums=('d3305d3b2c61306184463711645fcce674c1dab643a0e391429e0a0bc0e14fc6'
+sha256sums=('e12c6d43f1e582e18fc71355bb08c982736f481b581167c0d4749f8c7890f183'
             'fc2236cfc589b72346584ed8a48ef5826b02b0598c08445e1b05fb1709ce55c4'
-            'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
             '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
@@ -159,11 +157,7 @@ prepare() {
   msg2 "0013-bootsplash."
   git apply -p1 < "${srcdir}/0013-bootsplash.patch"
 
-  if [ "${CARCH}" = "x86_64" ]; then
-    cat "${srcdir}/config.x86_64" > ./.config
-  else
-    cat "${srcdir}/config" > ./.config
-  fi
+  cat "${srcdir}/config" > ./.config
 
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
@@ -227,11 +221,7 @@ package_linux58() {
   echo "${_basekernel}-${CARCH}" | install -Dm644 /dev/stdin "${pkgdir}/usr/lib/modules/${_kernver}/kernelbase"
 
   # add kernel version
-  if [ "${CARCH}" = "x86_64" ]; then
-     echo "${pkgver}-${pkgrel}-MANJARO x64" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
-  else
-     echo "${pkgver}-${pkgrel}-MANJARO x32" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
-  fi
+  echo "${pkgver}-${pkgrel}-MANJARO x64" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
 
   # make room for external modules
   local _extramodules="extramodules-${_basekernel}${_kernelname:--MANJARO}"
@@ -269,10 +259,6 @@ package_linux58-headers() {
   install -Dt "${_builddir}/arch/${KARCH}/kernel" -m644 "arch/${KARCH}/kernel/asm-offsets.s"
   #install -Dt "${_builddir}/arch/${KARCH}/kernel" -m644 "arch/${KARCH}/kernel/macros.s"
 
-  if [ "${CARCH}" = "i686" ]; then
-    install -Dt "${_builddir}/arch/${KARCH}" -m644 "arch/${KARCH}/Makefile_32.cpu"
-  fi
-
   cp -t "${_builddir}/arch/${KARCH}" -a "arch/${KARCH}/include"
 
   install -Dt "${_builddir}/drivers/md" -m644 drivers/md/*.h
@@ -292,10 +278,8 @@ package_linux58-headers() {
   # copy in Kconfig files
   find . -name Kconfig\* -exec install -Dm644 {} "${_builddir}/{}" \;
 
-  if [ "${CARCH}" = "x86_64" ]; then
-    # add objtool for external module building and enabled VALIDATION_STACK option
-    install -Dt "${_builddir}/tools/objtool" tools/objtool/objtool
-  fi
+  # add objtool for external module building and enabled VALIDATION_STACK option
+  install -Dt "${_builddir}/tools/objtool" tools/objtool/objtool
 
   # remove unneeded architectures
   local _arch
