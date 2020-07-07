@@ -1,10 +1,9 @@
-# Based on the file created for Arch Linux by:
+# Maintainer: Philip Müller <philm[at]manjaro[dot]org>
+# Maintainer: Helmut Stult <helmut[at]manjaro[dot]org>
+
+# Arch credits:
 # Tobias Powalowski <tpowa@archlinux.org>
 # Thomas Baechler <thomas@archlinux.org>
-
-# Maintainer: Philip Müller (x86_64) <philm@manjaro.org>
-# Maintainer: Jonathon Fernyhough (i686) <jonathon@manjaro.org>
-# Contributor: Helmut Stult <helmut[at]manjaro[dot]org>
 
 pkgbase=linux57
 pkgname=('linux57' 'linux57-headers')
@@ -14,7 +13,7 @@ _basever=57
 _aufs=20200518
 pkgver=5.7.7
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
 makedepends=('bc'
@@ -29,7 +28,7 @@ options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         # the main kernel config files
-        'config.x86_64' 'config' 'config.aufs'
+        'config' 'config.aufs'
         # AUFS Patches
         "aufs5.x-rcN-${_aufs}.patch"
         'aufs5-base.patch'
@@ -69,7 +68,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'dc533b4b9756d417d59c2514237401d2c5d0814d13083b4f5736df48cf9312f4'
             '2a4cad8a5a80280b74513370c696531e583085fb671238692fadf60bc2cc2f2e'
-            'bfe52746bfc04114627b6f1e0dd94bc05dd94abe8f6dbee770f78d6116e315e8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '018cb4826735b83715436d04063b66207b3d6f8f9516fa7e033ffa13364958c3'
             '0cf385b91049106e2e737b7fcf749bbf3469a5179358bef3a21bf574639c12aa'
@@ -206,11 +204,7 @@ prepare() {
   msg2 "vfs-ino"
   patch -Np1 -i "${srcdir}/vfs-ino.patch"
 
-  if [ "${CARCH}" = "x86_64" ]; then
-    cat "${srcdir}/config.x86_64" > ./.config
-  else
-    cat "${srcdir}/config" > ./.config
-  fi
+  cat "${srcdir}/config" > ./.config
 
   cat "${srcdir}/config.aufs" >> ./.config
 
@@ -273,11 +267,7 @@ package_linux57() {
   echo "${_basekernel}-${CARCH}" | install -Dm644 /dev/stdin "${pkgdir}/usr/lib/modules/${_kernver}/kernelbase"
 
   # add kernel version
-  if [ "${CARCH}" = "x86_64" ]; then
-     echo "${pkgver}-${pkgrel}-MANJARO x64" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
-  else
-     echo "${pkgver}-${pkgrel}-MANJARO x32" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
-  fi
+  echo "${pkgver}-${pkgrel}-MANJARO x64" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
 
   # make room for external modules
   local _extramodules="extramodules-${_basekernel}${_kernelname:--MANJARO}"
@@ -315,10 +305,6 @@ package_linux57-headers() {
   install -Dt "${_builddir}/arch/${KARCH}/kernel" -m644 "arch/${KARCH}/kernel/asm-offsets.s"
   #install -Dt "${_builddir}/arch/${KARCH}/kernel" -m644 "arch/${KARCH}/kernel/macros.s"
 
-  if [ "${CARCH}" = "i686" ]; then
-    install -Dt "${_builddir}/arch/${KARCH}" -m644 "arch/${KARCH}/Makefile_32.cpu"
-  fi
-
   cp -t "${_builddir}/arch/${KARCH}" -a "arch/${KARCH}/include"
 
   install -Dt "${_builddir}/drivers/md" -m644 drivers/md/*.h
@@ -338,10 +324,8 @@ package_linux57-headers() {
   # copy in Kconfig files
   find . -name Kconfig\* -exec install -Dm644 {} "${_builddir}/{}" \;
 
-  if [ "${CARCH}" = "x86_64" ]; then
-    # add objtool for external module building and enabled VALIDATION_STACK option
-    install -Dt "${_builddir}/tools/objtool" tools/objtool/objtool
-  fi
+  # add objtool for external module building and enabled VALIDATION_STACK option
+  install -Dt "${_builddir}/tools/objtool" tools/objtool/objtool
 
   # remove unneeded architectures
   local _arch
