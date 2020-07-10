@@ -12,7 +12,7 @@ _basekernel=5.7
 _basever=57
 _aufs=20200622
 pkgver=5.7.8
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -36,8 +36,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         'aufs5-loopback.patch'
         'aufs5-mmap.patch'
         'aufs5-standalone.patch'
-#        'lockdep-debug.patch'
-        'proc_mounts.patch'
         'tmpfs-idr.patch'
         'vfs-ino.patch'
         # ARCH Patches
@@ -77,7 +75,6 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '842d2cb05d5796479654634a3cc6623513cefbfdf135a1471dbbfa994166ec14'
             '499d25d110f9867e6aa3a9eb085005d7e59795ab4e0023d6fce21e7b8c21f383'
             '3e45b6d925fc7490ce6597b7d353dd7a8e0681dd192e241f8c6491341673e30d'
-            '0339a83249cf3fcfb0ddc9caf607fd0312c5b84f35445a543d46f21e2b38240b'
             '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
             '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
@@ -202,10 +199,6 @@ prepare() {
   patch -Np1 -i "${srcdir}/aufs5-mmap.patch"
   msg2 "aufs5-standalone"
   patch -Np1 -i "${srcdir}/aufs5-standalone.patch"
-#  msg2 "lockdep-debug"
-#  patch -Np1 -i "${srcdir}/lockdep-debug.patch"
-  msg2 "proc_mounts"
-  patch -Np1 -i "${srcdir}/proc_mounts.patch"
   msg2 "tmpfs-idr"
   patch -Np1 -i "${srcdir}/tmpfs-idr.patch"
   msg2 "vfs-ino"
