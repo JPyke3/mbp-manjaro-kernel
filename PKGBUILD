@@ -12,7 +12,7 @@ _basekernel=5.7
 _basever=57
 _aufs=20200622
 pkgver=5.7.8
-pkgrel=5
+pkgrel=6
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -63,7 +63,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0010-bootsplash.patch'
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
-        '0013-bootsplash.patch')
+        '0013-bootsplash.patch'
+        futex-wait-multiple-5.2.1.patch)
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'eea2cb4ea7c2014b0daa6d702fc7087d017c55e6ea479434b1269626eda9fde5'
             '8acfa6bcdff16c55cf8ecb6fdd831b8d865b064c7df1ae0ec9043a143ec78a52'
@@ -98,7 +99,8 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
+            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
+            'b8a9225b4b5cbabac26398d11cc26566e4407d150dacb92f3411c9bb8cc23942')
 prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
@@ -202,6 +204,10 @@ prepare() {
   patch -Np1 -i "${srcdir}/tmpfs-idr.patch"
   msg2 "vfs-ino"
   patch -Np1 -i "${srcdir}/vfs-ino.patch"
+
+  # Valve "fsync" patch
+  msg2 "futex-wait-multiple-5.2.1.patch"
+  patch -Np1 -i "${srcdir}/futex-wait-multiple-5.2.1.patch"
 
   cat "${srcdir}/config" > ./.config
 
