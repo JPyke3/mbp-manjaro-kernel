@@ -12,7 +12,7 @@ _basekernel=5.7
 _basever=57
 _aufs=20200622
 pkgver=5.7.8
-pkgrel=6
+pkgrel=7
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -50,6 +50,9 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         # Lenovo P50 multiple fans
         '0005-thinkpad_acpi_dual_fan_control.patch::https://github.com/dvhart/linux-pdx86/commit/26c16f9d956f269bbc32e034e3ec11c4831137de.patch'
         "$pkgname-ath9k-fix-general-protection-fault-in-ath9k_hif_usb_rx_cb.patch::https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/plain/releases/5.7.3/ath9k-fix-general-protection-fault-in-ath9k_hif_usb_rx_cb.patch"
+        # Lenovo LEGION 5
+        '0001-lenovo-wmi1.patch'
+        '0001-lenovo-wmi2.patch'
         # Bootsplash
         '0001-bootsplash.patch'
         '0002-bootsplash.patch'
@@ -87,6 +90,8 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
             'f93707e75ec6be5f289605f913e59d4f3514524a1aab3368f49bf6789723d443'
             '715ee8cae71db82f31c486cc0a946a7e9f9eb8d7c69d8bb5c64c35400affef3c'
+            '7d2af76b8dae73946379b967a493b927d76a68bb524b275b7c445bab90995687'
+            '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
             'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
@@ -146,6 +151,13 @@ prepare() {
   # https://twitter.com/vskye11/status/1216240051639791616
   patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
 
+  # Lenovo LEGION 5
+  msg "Lenovo LEGION 5"
+  msg2 "0001-lenovo-wmi1"
+  patch -Np1 -i '../0001-lenovo-wmi1.patch'
+  msg2 "0001-lenovo-wmi2"
+  patch -Np1 -i '../0001-lenovo-wmi2.patch'
+
   # handling of multiple fans on Lenovo P50
   # https://github.com/vmatare/thinkfan/issues/58
   msg "handling of multiple fans on Lenovo P50"
@@ -160,30 +172,30 @@ prepare() {
   msg "Add bootsplash"
   msg2 "0001-bootsplash."
   patch -Np1 -i "${srcdir}/0001-bootsplash.patch"
-  msg2 "0002-bootsplash."
+  msg2 "0002-bootsplash"
   patch -Np1 -i "${srcdir}/0002-bootsplash.patch"
-  msg2 "0003-bootsplash."
+  msg2 "0003-bootsplash"
   patch -Np1 -i "${srcdir}/0003-bootsplash.patch"
-  msg2 "0004-bootsplash."
+  msg2 "0004-bootsplash"
   patch -Np1 -i "${srcdir}/0004-bootsplash.patch"
-  msg2 "0005-bootsplash."
+  msg2 "0005-bootsplash"
   patch -Np1 -i "${srcdir}/0005-bootsplash.patch"
-  msg2 "0006-bootsplash."
+  msg2 "0006-bootsplash"
   patch -Np1 -i "${srcdir}/0006-bootsplash.patch"
-  msg2 "0007-bootsplash."
+  msg2 "0007-bootsplash"
   patch -Np1 -i "${srcdir}/0007-bootsplash.patch"
-  msg2 "0008-bootsplash."
+  msg2 "0008-bootsplash"
   patch -Np1 -i "${srcdir}/0008-bootsplash.patch"
-  msg2 "0009-bootsplash."
+  msg2 "0009-bootsplash"
   patch -Np1 -i "${srcdir}/0009-bootsplash.patch"
   msg2 "0010-bootsplash."
   patch -Np1 -i "${srcdir}/0010-bootsplash.patch"
-  msg2 "0011-bootsplash."
+  msg2 "0011-bootsplash"
   patch -Np1 -i "${srcdir}/0011-bootsplash.patch"
-  msg2 "0012-bootsplash."
+  msg2 "0012-bootsplash"
   patch -Np1 -i "${srcdir}/0012-bootsplash.patch"
   # use git-apply to add binary files
-  msg2 "0013-bootsplash."
+  msg2 "0013-bootsplash"
   git apply -p1 < "${srcdir}/0013-bootsplash.patch"
 
   # add aufs5 support
