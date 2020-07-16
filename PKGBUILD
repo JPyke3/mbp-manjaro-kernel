@@ -11,8 +11,8 @@ _kernelname=-MANJARO
 _basekernel=5.7
 _basever=57
 _aufs=20200622
-pkgver=5.7.8
-pkgrel=8
+pkgver=5.7.9
+pkgrel=1
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -40,19 +40,20 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
         # MANJARO Patches
-        '0001-nonupstream-navi10-vfio-reset.patch'
         '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
+        '0001-futex.patch'
         '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
         # Lenovo P50 multiple fans
         '0005-thinkpad_acpi_dual_fan_control.patch::https://github.com/dvhart/linux-pdx86/commit/26c16f9d956f269bbc32e034e3ec11c4831137de.patch'
-        "$pkgname-ath9k-fix-general-protection-fault-in-ath9k_hif_usb_rx_cb.patch::https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/plain/releases/5.7.3/ath9k-fix-general-protection-fault-in-ath9k_hif_usb_rx_cb.patch"
-        # Lenovo LEGION 5
+         # Lenovo + AMD
+        '0001-nonupstream-navi10-vfio-reset.patch'
         '0001-lenovo-wmi1.patch'
         '0001-lenovo-wmi2.patch'
+        '0002-pinctrl-amd.patch'
         # Bootsplash
         '0001-bootsplash.patch'
         '0002-bootsplash.patch'
@@ -66,13 +67,12 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0010-bootsplash.patch'
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
-        '0013-bootsplash.patch'
-        futex-patches.patch)
+        '0013-bootsplash.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
-            'eea2cb4ea7c2014b0daa6d702fc7087d017c55e6ea479434b1269626eda9fde5'
-            '8acfa6bcdff16c55cf8ecb6fdd831b8d865b064c7df1ae0ec9043a143ec78a52'
+            '63e25e02432839714a3173154792930d0d80940d31cef0f4370081538f6c2bbc'
+            '4999143d190933b59cf9460d50ced4eacf39696ccda86cb6db4f3243bde41fde'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            'b3455e089e3ac499c0df4a47636aec6eed2b0be0a6e4c7af7aaccb7274dae5ce'
+            'd9a9d1a3410c82cfaa282dd139429bedf4fa07dde904eefcf3ac053d70ad2770'
             'a320441bd4540eaf6ed10bbcfb9714bd6d358852aacf0da63330c40a1ad3732c'
             '2ccc807cc6f0fc21f8e23e2e9fd080eb1bc12c3450779e7025ebeaeee2ecffb4'
             '842d2cb05d5796479654634a3cc6623513cefbfdf135a1471dbbfa994166ec14'
@@ -81,17 +81,18 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
             '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
-            'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
             '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
+            '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
             'f93707e75ec6be5f289605f913e59d4f3514524a1aab3368f49bf6789723d443'
-            '715ee8cae71db82f31c486cc0a946a7e9f9eb8d7c69d8bb5c64c35400affef3c'
+            'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
             '7d2af76b8dae73946379b967a493b927d76a68bb524b275b7c445bab90995687'
             '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
+            'ab22f6692c8e3f636b7d07f671d442416555bfc581d01b11ce35a4de0c74418f'
             'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
@@ -104,8 +105,7 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
-            '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e')
+            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
 prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
@@ -122,10 +122,6 @@ prepare() {
   msg2 "PATCH: 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER"
   patch -Np1 -i "${srcdir}/0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch"
 
-  msg "ath9k revert patch"
-  # https://forum.manjaro.org/t/testing-update-2020-06-26-kernels-mesa-20-1-2-haskell/150212/22
-  patch -Rp1 -i "${srcdir}/$pkgname-ath9k-fix-general-protection-fault-in-ath9k_hif_usb_rx_cb.patch"
-
   # other fixes by Arch
 
   # add patches for snapd
@@ -140,23 +136,26 @@ prepare() {
   msg2 "0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
   patch -Np1 -i "${srcdir}/0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch"
 
-  msg "navi10-vfio reset patch"
+  msg "nuvoton hwmon driver patch"
+  # https://twitter.com/vskye11/status/1216240051639791616
+  patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
+
+  # Lenovo + AMD
+  msg "Lenovo + AMD"
+
+  msg2 "navi10-vfio reset patch"
   # TODO: remove when AMD properly fixes it!
   # INFO: this is a hack and won't be upstreamed
   # https://forum.level1techs.com/t/145666/86
   # https://forum.manjaro.org/t/107820/11
   patch -Np1 -i "${srcdir}/0001-nonupstream-navi10-vfio-reset.patch"
 
-  msg "nuvoton hwmon driver patch"
-  # https://twitter.com/vskye11/status/1216240051639791616
-  patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
-
-  # Lenovo LEGION 5
-  msg "Lenovo LEGION 5"
   msg2 "0001-lenovo-wmi1"
   patch -Np1 -i '../0001-lenovo-wmi1.patch'
   msg2 "0001-lenovo-wmi2"
   patch -Np1 -i '../0001-lenovo-wmi2.patch'
+  msg2 "0002-pinctrl-amd"
+  patch -Np1 -i '../0002-pinctrl-amd.patch'
 
   # handling of multiple fans on Lenovo P50
   # https://github.com/vmatare/thinkfan/issues/58
@@ -167,6 +166,10 @@ prepare() {
   # https://bugzilla.kernel.org/show_bug.cgi?id=207585
   msg "handling of multiple fans on Lenovo P50"
   patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
+
+  # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
+  msg2 "0001-futex.patch"
+  patch -Np1 -i "${srcdir}/0001-futex.patch"
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
   msg "Add bootsplash"
@@ -216,10 +219,6 @@ prepare() {
   patch -Np1 -i "${srcdir}/tmpfs-idr.patch"
   msg2 "vfs-ino"
   patch -Np1 -i "${srcdir}/vfs-ino.patch"
-
-  # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
-  msg2 "futex-patches.patch"
-  patch -Np1 -i "${srcdir}/futex-patches.patch"
 
   cat "${srcdir}/config" > ./.config
 
