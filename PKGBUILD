@@ -12,7 +12,7 @@ _basekernel=5.7
 _basever=57
 _aufs=20200622
 pkgver=5.7.9
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -39,6 +39,9 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         'vfs-ino.patch'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
+        '0001-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_GUEST_CAPABILITIES-ioctl.patch'
+        '0001-iwlwifi-Make-some-Killer-Wireless-AC-1550-cards-working-again.patch'
+        '0001-pci-edr-log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-events.patch'
         # MANJARO Patches
         '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
@@ -81,6 +84,9 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
             '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
             '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
+            '095804fb1045f6ccb52825d0d8c3aad1237e919f30586034267918a15d1249f6'
+            'bdd0344427007d11412c37294559dc71090dfd0b0e6bd4b7008f32810ba797c4'
+            'd1aba2b46e810374e49296760959da48e58d88c36e377479a54e7636e1ba7dc0'
             '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
             '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e'
@@ -92,7 +98,7 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
             '7d2af76b8dae73946379b967a493b927d76a68bb524b275b7c445bab90995687'
             '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
-            'ab22f6692c8e3f636b7d07f671d442416555bfc581d01b11ce35a4de0c74418f'
+            '427fd41ac742110d413f01daba66d5cd023b8e63fdc63242fcc96f589e66867f'
             'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
@@ -123,6 +129,9 @@ prepare() {
   patch -Np1 -i "${srcdir}/0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch"
 
   # other fixes by Arch
+  patch -Np1 -i "${srcdir}/0001-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_GUEST_CAPABILITIES-ioctl.patch"
+  patch -Np1 -i "${srcdir}/0001-iwlwifi-Make-some-Killer-Wireless-AC-1550-cards-working-again.patch"
+  patch -Np1 -i "${srcdir}/0001-pci-edr-log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-events.patch"
 
   # add patches for snapd
   # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
