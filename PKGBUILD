@@ -5,9 +5,9 @@
 # Tobias Powalowski <tpowa@archlinux.org>
 # Thomas Baechler <thomas@archlinux.org>
 
-pkgbase=linux57
-pkgname=('linux57' 'linux57-headers')
-_kernelname=-MANJARO
+pkgbase=linux57-mbp
+pkgname=('linux57-mbp' 'linux57-mbp-headers' 'linux57-mbp-docs')
+_kernelname=-MANJARO-mbp
 _basekernel=5.7
 _basever=57
 _aufs=20200622
@@ -70,10 +70,25 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0010-bootsplash.patch'
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
-        '0013-bootsplash.patch')
+        '0013-bootsplash.patch'
+	#mbp
+	'2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch'
+	'3001-applesmc-convert-static-structures-to-drvdata.patch'
+	'3002-applesmc-make-io-port-base-addr-dynamic.patch'
+	'3003-applesmc-switch-to-acpi_device-from-platform.patch'
+	'3004-applesmc-key-interface-wrappers.patch'
+	'3005-applesmc-basic-mmio-interface-implementation.patch'
+	'3006-applesmc-fan-support-on-T2-Macs.patch'
+	'4001-touchpad.patch'
+	'4002-keyboard-backlight.patch'
+	'5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
+	'5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
+	'camera.patch'
+	'sphinx-workaround.patch'
+	'wifi.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '63e25e02432839714a3173154792930d0d80940d31cef0f4370081538f6c2bbc'
-            '4999143d190933b59cf9460d50ced4eacf39696ccda86cb6db4f3243bde41fde'
+            '4a22919045ea07c02ad0b78d14151ffd64be25eed6a0b2b9a018b6650c8391fb'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             'd9a9d1a3410c82cfaa282dd139429bedf4fa07dde904eefcf3ac053d70ad2770'
             'a320441bd4540eaf6ed10bbcfb9714bd6d358852aacf0da63330c40a1ad3732c'
@@ -111,7 +126,21 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
+            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
+            '8e8fb392a95f71ae63df14199b9671a75a7e819e75d54a6e2767d6ea5b86bc6a'
+            '25e1aac0d44d72e377f08e4f4b90351cffcacc0be63e02a4033cb99f10cc9fe7'
+            'c70118659c5cf6a5c7f060c941d46fdd3b1e6d28f2b62c24a941745f2b3c4732'
+            '3855aa07fab97d202900216951225b6952d7c716258a3c3727df8e6277289ee0'
+            '9e5e0b45fe007ed214049b26b44174ee8f61376076e80fd33bba9fdac001e157'
+            '3c8a361370ed3ee094e2c8af1ff5360fd78f24e387c250904031fb70e8f2bb6e'
+            '8e43d95104301913737e5d73860f0e21bb0e5e25dcfd0f16d48a0715b38c98a1'
+            'e1d72fdb0a7a66a6f3fc8afb6fe056f28cfa088c1cc9c799b93405b62a274b96'
+            'a6c070d7b7444d711d9cb6b28bccb774228864132ef83dd3a291df3353e85465'
+            '0318952f59efdce4dc72703adc764940db6fdff184960c27a23a80c3413d8a60'
+            'e632f2959efca848fd28acb5e278cc476f8fb54d70ca95272b0a76add47e474e'
+            '717f7fc70a3e3fcfa5ffbac505c8259c1d86718ca1ca6593e8925dac3d29a835'
+            '8cb21e0b3411327b627a9dd15b8eb773295a0d2782b1a41b2a8839d1b2f5778c'
+            '24c5826ac641970eccae645ec491691e82dc2248440bf5bd3517e78a5974c330')
 prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
@@ -229,6 +258,37 @@ prepare() {
   msg2 "vfs-ino"
   patch -Np1 -i "${srcdir}/vfs-ino.patch"
 
+    #add mbp support
+  msg "add mbp support"
+  msg2 "drm-amd-display-force-link-rate"
+  patch -Np1 -i "${srcdir}/2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch"
+  msg2 "applesmc-convert-static-structures-to-drvdata"
+  patch -Np1 -i "${srcdir}/3001-applesmc-convert-static-structures-to-drvdata.patch"
+  msg2 "applesmc-switch-to-acpi-device-from-platform"
+  patch -Np1 -i "${srcdir}/3002-applesmc-make-io-port-base-addr-dynamic.patch"
+  msg2 "applesmc-switch-to-acpi_device-from-platform"
+  patch -Np1 -i "${srcdir}/3003-applesmc-switch-to-acpi_device-from-platform.patch"
+  msg2 "applesmc-key-interface-wrappers"
+  patch -Np1 -i "${srcdir}/3004-applesmc-key-interface-wrappers.patch"
+  msg2 "applesmc-basic-mmio-interface-implementation"
+  patch -Np1 -i "${srcdir}/3005-applesmc-basic-mmio-interface-implementation.patch"
+  msg2 "applesmc-fan-support-on-T2-Macs"
+  patch -Np1 -i "${srcdir}/3006-applesmc-fan-support-on-T2-Macs.patch"
+  msg2 "touchpad"
+  patch -Np1 -i "${srcdir}/4001-touchpad.patch"
+  msg2 "keyboard-backlight"
+  patch -Np1 -i "${srcdir}/4002-keyboard-backlight.patch"
+  msg2 "brcmfmac-move-brcmf_mp_device-into-its-own-header"
+  patch -Np1 -i "${srcdir}/5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch"
+  msg2 "brcmfmac-Add-ability-to-manually-specify-FW-rambase"
+  patch -Np1 -i "${srcdir}/5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch"
+  msg2 "camera"
+  patch -Np1 -i "${srcdir}/camera.patch"
+  msg2 "sphinx-workaround"
+  patch -Np1 -i "${srcdir}/sphinx-workaround.patch"
+  msg2 "wifi"
+  patch -Np1 -i "${srcdir}/wifi.patch"
+
   cat "${srcdir}/config" > ./.config
 
   cat "${srcdir}/config.aufs" >> ./.config
@@ -267,7 +327,7 @@ build() {
   make ${MAKEFLAGS} LOCALVERSION= bzImage modules
 }
 
-package_linux57() {
+package_linux57-mbp() {
   pkgdesc="The ${pkgbase/linux/Linux} kernel and modules"
   depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=27')
   optdepends=('crda: to set the correct wireless channels of your country')
@@ -312,7 +372,7 @@ package_linux57() {
   install -Dt "${pkgdir}/usr/lib/modules/${_kernver}/build" -m644 vmlinux
 }
 
-package_linux57-headers() {
+package_linux57-mbp-headers() {
   pkgdesc="Header files and scripts for building modules for ${pkgbase/linux/Linux} kernel"
   provides=("linux-headers=$pkgver")
 
@@ -376,6 +436,25 @@ package_linux57-headers() {
     esac
     /usr/bin/strip ${_strip} "${_binary}"
   done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
+}
+
+package_linux57-mbp-docs() {
+  pkgdesc="Documentation for the $pkgdesc kernel"
+
+  cd "${srcdir}/linux-${_basekernel}"
+  local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
+
+  echo "Installing documentation..."
+  local src dst
+  while read -rd '' src; do
+    dst="${src#Documentation/}"
+    dst="$builddir/Documentation/${dst#output/}"
+    install -Dm644 "$src" "$dst"
+  done < <(find Documentation -name '.*' -prune -o ! -type d -print0)
+
+  echo "Adding symlink..."
+  mkdir -p "$pkgdir/usr/share/doc"
+  ln -sr "$builddir/Documentation" "$pkgdir/usr/share/doc/$pkgbase"
 }
 
 _server=cpx51
