@@ -10,15 +10,15 @@ _server=cpx51
 
 pkgbase=linux58
 pkgname=('linux58' 'linux58-headers')
-pkgver=5.8rc6.d0719.gba47d84
+pkgver=5.8rc7.d0726.g92ed301
 pkgrel=1
 _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
 _aufs=20200622
-_rc=rc6
-_commit=ba47d845d715a010f7b51f6f89bae32845e6acb7
-_shortcommit=${_rc}.d0719.g${_commit:0:7}
+_rc=rc7
+_commit=92ed301919932f777713b9172e525674157e983d
+_shortcommit=${_rc}.d0726.g${_commit:0:7}
 _pkgver=${_basekernel}${_shortcommit}
 arch=('x86_64')
 url="http://www.kernel.org/"
@@ -54,7 +54,7 @@ source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
-sha256sums=('30795873522b3bd7fb67a5599a906057754a641c358ce219f17312f4918bd5de'
+sha256sums=('ad77eae366580902ee4fe2174b4e667d4abe4df392f2efe0360462ad30dabfe7'
             '1d12cd6318aca06c826283bb9c80d648800dacbe1dbbb7679026910a37f34ac7'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
