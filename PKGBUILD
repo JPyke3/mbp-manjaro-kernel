@@ -10,26 +10,27 @@ _server=cpx51
 
 pkgbase=linux58
 pkgname=('linux58' 'linux58-headers')
-pkgver=5.8rc7.d0731.g7dc6fd0
-pkgrel=1
 _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
 _aufs=20200622
-_rc=rc7
-_commit=7dc6fd0f3b8404542718039f5de19fe56e474578
-_shortcommit=${_rc}.d0731.g${_commit:0:7}
-_pkgver=${_basekernel}${_shortcommit}
+pkgver=5.8.0
+pkgrel=0
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
-makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'elfutils' 'git')
+makedepends=('bc'
+    'docbook-xsl'
+    'elfutils'
+    'git'
+    'inetutils'
+    'kmod'
+    'xmlto')
 options=('!strip')
-source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
+source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         #"https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
-        "linux-${_pkgver}.zip::https://codeload.github.com/torvalds/linux/zip/$_commit"
         # the main kernel config files
-        'config'
+        'config' 'config.aufs'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
         # MANJARO Patches
@@ -77,12 +78,7 @@ sha256sums=('9613ad6c9f35c27d6f3e7d03b91fa8480d71ab2588fb69b5b311d0eb1e0a0717'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
             '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
-pkgver() {
-  printf '%s' "${_pkgver}"
-}
-
 prepare() {
-  mv "${srcdir}/linux-${_commit}" "${srcdir}/linux-${_basekernel}"
   cd "${srcdir}/linux-${_basekernel}"
 
   # add upstream patch
@@ -131,30 +127,30 @@ prepare() {
   msg "Add bootsplash"
   msg2 "0001-bootsplash."
   patch -Np1 -i "${srcdir}/0001-bootsplash.patch"
-  msg2 "0002-bootsplash."
+  msg2 "0002-bootsplash"
   patch -Np1 -i "${srcdir}/0002-bootsplash.patch"
-  msg2 "0003-bootsplash."
+  msg2 "0003-bootsplash"
   patch -Np1 -i "${srcdir}/0003-bootsplash.patch"
-  msg2 "0004-bootsplash."
+  msg2 "0004-bootsplash"
   patch -Np1 -i "${srcdir}/0004-bootsplash.patch"
-  msg2 "0005-bootsplash."
+  msg2 "0005-bootsplash"
   patch -Np1 -i "${srcdir}/0005-bootsplash.patch"
-  msg2 "0006-bootsplash."
+  msg2 "0006-bootsplash"
   patch -Np1 -i "${srcdir}/0006-bootsplash.patch"
-  msg2 "0007-bootsplash."
+  msg2 "0007-bootsplash"
   patch -Np1 -i "${srcdir}/0007-bootsplash.patch"
-  msg2 "0008-bootsplash."
+  msg2 "0008-bootsplash"
   patch -Np1 -i "${srcdir}/0008-bootsplash.patch"
-  msg2 "0009-bootsplash."
+  msg2 "0009-bootsplash"
   patch -Np1 -i "${srcdir}/0009-bootsplash.patch"
   msg2 "0010-bootsplash."
   patch -Np1 -i "${srcdir}/0010-bootsplash.patch"
-  msg2 "0011-bootsplash."
+  msg2 "0011-bootsplash"
   patch -Np1 -i "${srcdir}/0011-bootsplash.patch"
-  msg2 "0012-bootsplash."
+  msg2 "0012-bootsplash"
   patch -Np1 -i "${srcdir}/0012-bootsplash.patch"
   # use git-apply to add binary files
-  msg2 "0013-bootsplash."
+  msg2 "0013-bootsplash"
   git apply -p1 < "${srcdir}/0013-bootsplash.patch"
 
   cat "${srcdir}/config" > ./.config
@@ -166,9 +162,6 @@ prepare() {
 
   msg "set extraversion to pkgrel"
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
-
-  # set patchlevel to 8
-  sed -ri "s|^(PATCHLEVEL =).*|\1 8|" Makefile
 
   msg "don't run depmod on 'make install'"
   # We'll do this ourselves in packaging
@@ -210,7 +203,7 @@ package_linux58() {
   _kernver="$(make LOCALVERSION= kernelrelease)"
 
   mkdir -p "${pkgdir}"/{boot,usr/lib/modules}
-  make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}/usr" modules_install
+  make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}/usr" INSTALL_MOD_STRIP=1 modules_install
 
   # systemd expects to find the kernel here to allow hibernation
   # https://github.com/systemd/systemd/commit/edda44605f06a41fb86b7ab8128dcf99161d2344
