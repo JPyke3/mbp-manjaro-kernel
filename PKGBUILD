@@ -15,7 +15,7 @@ _basekernel=5.8
 _basever=58
 _aufs=20200622
 pkgver=5.8.0
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -37,11 +37,18 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0001-nonupstream-navi10-vfio-reset.patch'
         '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
+        '0001-futex.patch'
         '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
         'virtualbox-temp.patch'
+
+         # Lenovo + AMD
+        '0001-nonupstream-navi10-vfio-reset.patch'
+        '0001-lenovo-wmi2.patch'
+        '0002-pinctrl-amd.patch'
+
         # Bootsplash
         '0001-bootsplash.patch'
         '0002-bootsplash.patch'
@@ -57,16 +64,21 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
-            '1d12cd6318aca06c826283bb9c80d648800dacbe1dbbb7679026910a37f34ac7'
+            '8f2cff6b5fae30a5d28ea3eca20e585b2c26359d81e958e61ae4b6265213e533'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
             '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
+            '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
+            'c98893aafd51e83107bb6823cbe3c63ee85c00f439c1facaed3b6ab3c0490e98'
+            'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
+            '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
+            '427fd41ac742110d413f01daba66d5cd023b8e63fdc63242fcc96f589e66867f'
             'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
@@ -110,22 +122,37 @@ prepare() {
   msg2 "0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
   patch -Np1 -i "${srcdir}/0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch"
 
-  msg "navi10-vfio reset patch"
+  # MANJARO Patches
+  msg "nuvoton hwmon driver patch"
+  # https://twitter.com/vskye11/status/1216240051639791616
+  patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
+
+  # Lenovo + AMD
+  msg "Lenovo + AMD"
+
+  msg2 "navi10-vfio reset patch"
   # TODO: remove when AMD properly fixes it!
   # INFO: this is a hack and won't be upstreamed
   # https://forum.level1techs.com/t/145666/86
   # https://forum.manjaro.org/t/107820/11
   patch -Np1 -i "${srcdir}/0001-nonupstream-navi10-vfio-reset.patch"
 
-  msg "nuvoton hwmon driver patch"
-  # https://twitter.com/vskye11/status/1216240051639791616
-  patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
+  msg2 "0001-lenovo-wmi2"
+  patch -Np1 -i '../0001-lenovo-wmi2.patch'
+  msg2 "0002-pinctrl-amd"
+  patch -Np1 -i '../0002-pinctrl-amd.patch'
 
   # https://bugzilla.kernel.org/show_bug.cgi?id=207585
-  msg "handling of multiple fans on Lenovo P50"
+  msg2 "handling of multiple fans on Lenovo P50"
   patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
 
+  # temp patch for VirtualBox 6.1.12
+  msg2 "virtualbox-temp.patch"
   patch -Np1 -i "${srcdir}/virtualbox-temp.patch"
+
+  # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
+  msg2 "0001-futex.patch"
+  patch -Np1 -i "${srcdir}/0001-futex.patch"
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
   msg "Add bootsplash"
