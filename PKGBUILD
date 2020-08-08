@@ -15,7 +15,7 @@ _basekernel=5.8
 _basever=58
 _aufs=20200622
 pkgver=5.8.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -41,6 +41,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
+        'virtualbox-temp.patch'
         # Bootsplash
         '0001-bootsplash.patch'
         '0002-bootsplash.patch'
@@ -123,6 +124,8 @@ prepare() {
   # https://bugzilla.kernel.org/show_bug.cgi?id=207585
   msg "handling of multiple fans on Lenovo P50"
   patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
+
+  patch -Np1 -i "${srcdir}/virtualbox-temp.patch"
 
   # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
   msg "Add bootsplash"
