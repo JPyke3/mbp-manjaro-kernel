@@ -42,6 +42,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
+        'virtualbox-temp.patch'
 
          # Lenovo + AMD
         '0001-nonupstream-navi10-vfio-reset.patch'
@@ -74,6 +75,7 @@ sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
+            'c98893aafd51e83107bb6823cbe3c63ee85c00f439c1facaed3b6ab3c0490e98'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
             '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
             '427fd41ac742110d413f01daba66d5cd023b8e63fdc63242fcc96f589e66867f'
@@ -143,6 +145,10 @@ prepare() {
   # https://bugzilla.kernel.org/show_bug.cgi?id=207585
   msg2 "handling of multiple fans on Lenovo P50"
   patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
+
+  # temp patch for VirtualBox 6.1.12
+  msg2 "virtualbox-temp.patch"
+  patch -Np1 -i "${srcdir}/virtualbox-temp.patch"
 
   # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
   msg2 "0001-futex.patch"
