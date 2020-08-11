@@ -15,8 +15,8 @@ _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
 _aufs=20200622
-pkgver=5.8.0
-pkgrel=2
+pkgver=5.8.1
+pkgrel=1
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -29,7 +29,7 @@ makedepends=('bc'
     'xmlto')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
-        #"https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
+        "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         # the main kernel config files
         'config' 'config.aufs'
         # ARCH Patches
@@ -65,7 +65,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.patch')
 sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
-            'bb277613fd5c2ac8dde4cc06dd66cbf5ee26316d8d9b8b0fa1508577706bb1c1'
+            '6f7a720d5037c69a8ae80f9c67063a1d26523ddf094411a436da4228426ee569'
+            '1142706d4c304191fd41463fd72e9fb36a1f0abf63c3ee799f069a7eaf2d9ad8'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
@@ -97,8 +98,8 @@ prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
   # add upstream patch
-  #msg "add upstream patch"
-  #patch -p1 -i "${srcdir}/patch-${pkgver}"
+  msg "add upstream patch"
+  patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   # add latest fixes from stable queue, if needed
   # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
