@@ -15,8 +15,8 @@ _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
 _aufs=20200622
-pkgver=5.8.1
-pkgrel=3
+pkgver=5.8.2
+pkgrel=1
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -67,11 +67,11 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.gitpatch')
 sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
-            '6f7a720d5037c69a8ae80f9c67063a1d26523ddf094411a436da4228426ee569'
-            'c1230d6321d64b8b5679223eea0fbeb7bf8117d1bbffccd3dd32c445e43ea29a'
+            '8a385031e4e2b514d68590b20c0e22e3daf9d97bbfacd2ba131c8ea2e3449ccd'
+            '38827491024141c1fda6b6ca2ae05ea6109094ce291fa2fe8331908fed7f2a0e'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
-            'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
+            '442c7dbebbd25352dc96be3a2a23fe4c112f49ad422fea66d7cd2e43d3312b24'
             '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
             '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e'
@@ -79,7 +79,7 @@ sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
-            'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
+            '442c7dbebbd25352dc96be3a2a23fe4c112f49ad422fea66d7cd2e43d3312b24'
             '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
             '427fd41ac742110d413f01daba66d5cd023b8e63fdc63242fcc96f589e66867f'
             'c98893aafd51e83107bb6823cbe3c63ee85c00f439c1facaed3b6ab3c0490e98'
@@ -108,7 +108,7 @@ prepare() {
       src="${src%%::*}"
       src="${src##*/}"
       [[ $src = *.patch ]] || continue
-      echo "Applying patch $src..."
+      msg2 "Applying patch: $src..."
       patch -Np1 < "../$src"
   done
 

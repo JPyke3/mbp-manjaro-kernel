@@ -110,19 +110,5 @@ index 44c4ae1abd00..d94ddb1c6832 100644
  static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
  	{ PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_82599_SFP_VF,
  		 reset_intel_82599_sfp_virtfn },
-@@ -3836,6 +3927,13 @@ static const struct pci_dev_reset_methods pci_dev_reset_methods[] = {
- 	{ PCI_VENDOR_ID_INTEL, 0x0953, delay_250ms_after_flr },
- 	{ PCI_VENDOR_ID_CHELSIO, PCI_ANY_ID,
- 		reset_chelsio_generic_dev },
-+	{ PCI_VENDOR_ID_ATI, 0x7310, reset_amd_navi10 },
-+	{ PCI_VENDOR_ID_ATI, 0x7312, reset_amd_navi10 },
-+	{ PCI_VENDOR_ID_ATI, 0x7318, reset_amd_navi10 },
-+	{ PCI_VENDOR_ID_ATI, 0x7319, reset_amd_navi10 },
-+	{ PCI_VENDOR_ID_ATI, 0x731a, reset_amd_navi10 },
-+	{ PCI_VENDOR_ID_ATI, 0x731b, reset_amd_navi10 },
-+	{ PCI_VENDOR_ID_ATI, 0x731f, reset_amd_navi10 },
- 	{ 0 }
- };
- 
 -- 
 2.20.1
