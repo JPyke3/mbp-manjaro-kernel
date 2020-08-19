@@ -45,7 +45,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
 
          # Lenovo + AMD
-        '0001-nonupstream-navi10-vfio-reset.patch'
         '0001-lenovo-wmi2.patch'
         '0002-pinctrl-amd.patch'
 
