@@ -16,7 +16,7 @@ _basekernel=5.8
 _basever=58
 _aufs=20200622
 pkgver=5.8.5
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -31,7 +31,7 @@ options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         # the main kernel config files
-        'config' 'config.aufs'
+        'config' 'config.aufs' 'config.anbox'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
         # MANJARO Patches
@@ -66,8 +66,9 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0013-bootsplash.gitpatch')
 sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
             '69855667f003f3f6f9899dba5f3f9e05ab967bd8a7384f18033bdbece443ebb0'
-            '17ffd06e6d1f3aae3b6353801e3c426a8705809c91e1754027a534c0e3323c34'
+            '0ecba3688f213c56b443145c5ffcf3ddfbe9cb0ee4c1fc4bd1351266224ad997'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
+            'c079a87a7de0001f5f2b7a42a822c262e31f19f2c547613885f273822c9d4dcc'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             '7823d7488f42bc4ed7dfae6d1014dbde679d8b862c9a3697a39ba0dae5918978'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
