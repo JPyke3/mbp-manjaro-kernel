@@ -14,8 +14,7 @@ pkgname=('linux58' 'linux58-headers')
 _kernelname=-MANJARO
 _basekernel=5.8
 _basever=58
-_aufs=20200622
-pkgver=5.8.6
+pkgver=5.8.7
 pkgrel=1
 arch=('x86_64')
 url="http://www.kernel.org/"
@@ -65,7 +64,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0012-bootsplash.patch'
         '0013-bootsplash.gitpatch')
 sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
-            'b4ab9987a715753e64f0aa264dac91c3d7ca0651bfdd8fa5d19c8990f3b08abc'
+            'd394c98a7031fe2c88009082ccfdd8ec588dfbcf83a8d7969d016c4881e7028d'
             '0ecba3688f213c56b443145c5ffcf3ddfbe9cb0ee4c1fc4bd1351266224ad997'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             'c079a87a7de0001f5f2b7a42a822c262e31f19f2c547613885f273822c9d4dcc'
