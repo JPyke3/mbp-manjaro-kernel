@@ -16,9 +16,9 @@ jobs:
     steps:
       - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
       - uses: actions/checkout@v2
-      - run: ls /__w/linux57-mbp-manjaro/linux57-mbp-manjaro
-#     - run: useradd -m builder
-#     - run: mkdir -p /home/builder/packages
-#     - run: su builder -c "echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg"
-#     - run: su builder -c "gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg"
-#     - run: su builder -c "cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s --sign"
+      - run: useradd -m builder
+      - run: mv /__w/linux57-mbp-manjaro/linux57-mbp-manjaro /home/builder/
+      - run: mkdir -p /home/builder/packages
+      - run: su builder -c "echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg"
+      - run: su builder -c "gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg"
+      - run: su builder -c "cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s --sign"
