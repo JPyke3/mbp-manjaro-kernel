@@ -35,8 +35,8 @@ jobs:
         run: |
           su builder -c\
           "export GPG_TTY=$(tty);\
-          gpg --import --batch --passphrase \"${{ secrets.GPG_PASS }}\" /home/builder/key.gpg;\
-          cd /home/builder/\"$(echo -e \"$GITHUB_REPOSITORY\" | sed 's/.*\///g')\";\
+          gpg --import --batch --passphrase "${{ secrets.GPG_PASS }}" /home/builder/key.gpg;\
+          cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')";\
           makepkg -s --sign"
       - uses: actions/upload-artifact@v2
         name: Generate Artifacts
