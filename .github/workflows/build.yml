@@ -14,6 +14,7 @@ jobs:
       env:
         PKGDEST: /home/builder/packages
     steps:
+      - shell: bash
       - run: pacman -Syu gnupg --noconfirm
         name: Update image and Download Depends
       - run: useradd -m builder
@@ -21,7 +22,8 @@ jobs:
       - run: echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg
       - run: | 
           su builder -c\
-          "GPG_TTY=$(tty) gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg;\
+          "export GPG_TTY=$(tty);\
+          gpg --import --batch --passphrase "${{ secrets.GPG_PASS }}" /home/builder/key.gpg;\
           touch /home/builder/file;\
           gpg --batch --passphrase ${{ secrets.GPG_PASS }} --sign /home/builder/file"
 #        name: Export GPG key from secret to a file
