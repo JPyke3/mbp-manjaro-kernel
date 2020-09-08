@@ -25,9 +25,9 @@ jobs:
       - run: mkdir -p /home/builder/packages
         name: Create final package location
       - run: chown builder:builder -R /home/builder
-        name: Give the builder user ownership of it's own home dir
+        name: Chown builder home dir
       - run: su builder -c "cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s"
-        name: Impoart GPG key CD to makepkg dir and compile the kernel
+        name: Compile the Kernel
       - uses: actions/upload-artifact@v2
         name: Generate Artifacts
         if: ${{ always() }}
