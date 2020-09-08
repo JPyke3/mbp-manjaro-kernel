@@ -13,8 +13,10 @@ jobs:
       image: manjarolinux/base
       env:
         PKGDEST: /home/builder/packages
+    defaults:
+      run:
+        shell: bash
     steps:
-      - shell: bash
       - run: pacman -Syu gnupg --noconfirm
         name: Update image and Download Depends
       - run: useradd -m builder
