@@ -53,7 +53,7 @@ jobs:
       run:
         shell: bash
     steps:
-    - name: pacman -Syu zip unzip gnupg
+    - run: pacman -Syu zip unzip gnupg
     - run: mkdir -p /root/artifact
       name: Create filestructure for signing
     - uses: actions/download-artifact@v2
