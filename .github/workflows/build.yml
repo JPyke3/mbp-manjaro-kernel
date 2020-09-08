@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: manjarolinux/base
-      env: 
-        GPG_PASSPHRASE: ${{ secrets.GPG_PASS }}
-        GPG_KEY: ${{ secrets.GPG_SECRET }}
     steps:
       - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
       - run: useradd -m builder
       - run: su builder
       - run: mkdir -p ~/packages
+      - uses: actions/checkout@v2.3.2
+      - run: gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} <(echo -e ${{ secrets.GPG_SECRET }})
+      - run: makepkg -s --sign
