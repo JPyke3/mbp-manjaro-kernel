@@ -26,8 +26,8 @@ jobs:
           su builder -c\
           "export GPG_TTY=$(tty);\
           gpg --import --batch --passphrase "${{ secrets.GPG_PASS }}" /home/builder/key.gpg;\
-          echo -e \"This is a test file!\" >> ~/testfile.txt;\
-          gpg --batch --passphrase ${{ secrets.GPG_PASS }} --sign ~/testfile.txt;
+          echo -e \"This is a test file!\" >> /home/builder/testfile.txt;\
+          gpg --batch --passphrase ${{ secrets.GPG_PASS }} --sign /home/builder/testfile.txt;
           ls ~/"
 #        name: Export GPG key from secret to a file
 #      - uses: actions/checkout@v2
