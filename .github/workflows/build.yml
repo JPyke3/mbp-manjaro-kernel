@@ -24,11 +24,9 @@ jobs:
         name: Copy Repository to Builder Home Directory
       - run: mkdir -p /home/builder/packages
         name: Create final package location
-      - run: echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg
-        name: Export GPG key from secret to a file
       - run: chown builder:builder -R /home/builder
         name: Give the builder user ownership of it's own home dir
-      - run: su builder -c "gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg; cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s --sign"
+      - run: su builder -c "cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s"
         name: Impoart GPG key CD to makepkg dir and compile the kernel
       - uses: actions/upload-artifact@v2
         name: Generate Artifacts
