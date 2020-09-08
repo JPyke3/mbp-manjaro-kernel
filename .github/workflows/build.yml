@@ -18,6 +18,6 @@ jobs:
       - run: useradd -m builder
       - run: mkdir -p /home/builder/packages
       - uses: actions/checkout@v2.3.2
-      - run: mv ./"$(sed 's/.*\///g' <(echo -e "$GITHUB_REPOSITORY"))" /home/builder/
+      - run: bash -c "mv ./"$(sed 's/.*\///g' <(echo -e "$GITHUB_REPOSITORY"))" /home/builder/"
       - run: su builder -c "gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} <(echo -e "${{ secrets.GPG_SECRET}}")"
-      - run: su builder -c "cd /home/builder/"$(sed 's/.*\///g' <(echo -e "$GITHUB_REPOSITORY"))"; makepkg -s --sign"
+      - run: bash -c "su builder -c "cd /home/builder/"$(sed 's/.*\///g' <(echo -e "$GITHUB_REPOSITORY"))"; makepkg -s --sign""
