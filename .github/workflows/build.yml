@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: jpyke3/mbp-manjaro-linux57
+      env: 
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASS }}
+        GPG_KEY: ${{ secrets.GPG_SECRET }}
