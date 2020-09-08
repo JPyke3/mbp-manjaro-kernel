@@ -50,11 +50,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
-         # Lenovo + AMD
-        '0001-nonupstream-navi10-vfio-reset.patch'
-        '0001-lenovo-wmi1.patch'
-        '0001-lenovo-wmi2.patch'
-        '0002-pinctrl-amd.patch'
         # Bootsplash
         '0001-bootsplash.patch'
         '0002-bootsplash.patch'
@@ -107,11 +102,6 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
-            'f93707e75ec6be5f289605f913e59d4f3514524a1aab3368f49bf6789723d443'
-            'f1eec160ce5df5c2ea58d4e4fd44a6b1013863c6b3bf649414cd18c89ae500fa'
-            '7d2af76b8dae73946379b967a493b927d76a68bb524b275b7c445bab90995687'
-            '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
-            '427fd41ac742110d413f01daba66d5cd023b8e63fdc63242fcc96f589e66867f'
             'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
@@ -175,23 +165,6 @@ prepare() {
   msg "nuvoton hwmon driver patch"
   # https://twitter.com/vskye11/status/1216240051639791616
   patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
-
-  # Lenovo + AMD
-  msg "Lenovo + AMD"
-
-  msg2 "navi10-vfio reset patch"
-  # TODO: remove when AMD properly fixes it!
-  # INFO: this is a hack and won't be upstreamed
-  # https://forum.level1techs.com/t/145666/86
-  # https://forum.manjaro.org/t/107820/11
-  patch -Np1 -i "${srcdir}/0001-nonupstream-navi10-vfio-reset.patch"
-
-  msg2 "0001-lenovo-wmi1"
-  patch -Np1 -i '../0001-lenovo-wmi1.patch'
-  msg2 "0001-lenovo-wmi2"
-  patch -Np1 -i '../0001-lenovo-wmi2.patch'
-  msg2 "0002-pinctrl-amd"
-  patch -Np1 -i '../0002-pinctrl-amd.patch'
 
   # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
   msg2 "0001-futex.patch"
