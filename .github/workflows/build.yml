@@ -19,6 +19,6 @@ jobs:
       - run: useradd -m builder
       - run: cp -r /__w/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')" /home/builder/
       - run: mkdir -p /home/builder/packages
-      - run: su builder -c "echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg"
+      - run: echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg
       - run: su builder -c "gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg"
       - run: su builder -c "cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s --sign"
