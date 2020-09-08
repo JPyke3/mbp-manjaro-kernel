@@ -45,5 +45,6 @@ jobs:
 #        name: Impoart GPG key CD to makepkg dir and compile the kernel
 #      - uses: actions/upload-artifact@v2
 #        name: Generate Artifacts
+#        if: ${{ always() }}
 #        with:
 #          path: /home/builder/packages/
