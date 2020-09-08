@@ -14,7 +14,7 @@ jobs:
       env:
         PKGDEST: /home/builder/packages
     steps:
-      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfim
+      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
         name: Update image and Download Depends
       - uses: actions/checkout@v2
         name: Checkout the Repository
