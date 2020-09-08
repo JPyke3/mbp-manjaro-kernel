@@ -50,8 +50,6 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0002-apparmor-af_unix-mediation.patch'
         '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
         '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
-        # Lenovo P50 multiple fans
-        '0005-thinkpad_acpi_dual_fan_control.patch::https://github.com/dvhart/linux-pdx86/commit/26c16f9d956f269bbc32e034e3ec11c4831137de.patch'
          # Lenovo + AMD
         '0001-nonupstream-navi10-vfio-reset.patch'
         '0001-lenovo-wmi1.patch'
@@ -194,16 +192,6 @@ prepare() {
   patch -Np1 -i '../0001-lenovo-wmi2.patch'
   msg2 "0002-pinctrl-amd"
   patch -Np1 -i '../0002-pinctrl-amd.patch'
-
-  # handling of multiple fans on Lenovo P50
-  # https://github.com/vmatare/thinkfan/issues/58
-  msg "handling of multiple fans on Lenovo P50"
-  msg2 "PATCH: Thinkpad dual fan control"
-  patch -Np1 -i "${srcdir}/0005-thinkpad_acpi_dual_fan_control.patch"
-
-  # https://bugzilla.kernel.org/show_bug.cgi?id=207585
-  msg "handling of multiple fans on Lenovo P50"
-  patch -Np1 -i "${srcdir}/0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch"
 
   # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
   msg2 "0001-futex.patch"
