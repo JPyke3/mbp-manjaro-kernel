@@ -27,50 +27,23 @@ jobs:
         name: Copy Repository to Builder Home Directory
       - run: mkdir -p /home/builder/packages
         name: Create final package location
+      - run: echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg
+        name: Export GPG key from secret to a file
       - run: chown builder:builder -R /home/builder
         name: Give the builder user ownership of it's own home dir
+      - name: Import GPG key to builder keyring
+        run: |
+          su builder -c\
+          "export GPG_TTY=$(tty);\
+          gpg --import --batch --passphrase "${{ secrets.GPG_PASS }}" /home/builder/key.gpg"
       - name: Import GPG key CD to makepkg dir and compile the kernel
         run: |
           su builder -c\
           "export GPG_TTY=$(tty);\
           cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')";\
-          makepkg -s"
+          makepkg -s --sign"
       - uses: actions/upload-artifact@v2
         name: Generate Artifacts
         if: ${{ always() }}
         with:
-          name: Unsigned-Files
           path: /home/builder/packages/
-  
-  sign:
-    needs: [build]
-    runs-on: ubuntu-latest
-    container:
-      image: manjarolinux/base
-      env:
-        PKGDEST: /home/builder/packages
-    defaults:
-      run:
-        shell: bash
-    steps:
-    - run: pacman -Syu zip unzip gnupg
-    - run: mkdir -p /root/artifact
-      name: Create filestructure for signing
-    - uses: actions/download-artifact@v2
-      with:
-        name: artifact.zip
-        path: /root/artifact
-    - run: echo -e "${{ secrets.GPG_SECRET}}" >> /root/key.gpg
-      name: Export GPG key from secret to a file
-    - name: Import GPG key to keyring
-      run: export GPG_TTY=$(tty); gpg --import --batch --passphrase "${{ secrets.GPG_PASS }}" /root/key.gpg
-    - run: unzip /root/artifact/artifact.zip
-      name: Unzip the artifact file
-    - run: cd /root/artifact; rm artifact.zip; 
-      name: Remove zip file
-    - run: gpg --sign --batch --pinentry-mode loopback --passphrase "${{ secrets.GPG_PASS }}" --no-armor *.tar.xz
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Signed-Files
-        path: /root/artifact/*.tar.xz
-    
