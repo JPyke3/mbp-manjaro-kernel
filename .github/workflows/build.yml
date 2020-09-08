@@ -31,11 +31,15 @@ jobs:
         name: Export GPG key from secret to a file
       - run: chown builder:builder -R /home/builder
         name: Give the builder user ownership of it's own home dir
+      - name: Import GPG key to builder keyring
+        run: |
+          su builder -c\
+          "export GPG_TTY=$(tty);\
+          gpg --import --batch --passphrase "${{ secrets.GPG_PASS }}" /home/builder/key.gpg\
       - name: Import GPG key CD to makepkg dir and compile the kernel
         run: |
           su builder -c\
           "export GPG_TTY=$(tty);\
-          gpg --import --batch --passphrase "${{ secrets.GPG_PASS }}" /home/builder/key.gpg;\
           cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')";\
           makepkg -s --sign"
       - uses: actions/upload-artifact@v2
