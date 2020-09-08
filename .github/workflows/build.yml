@@ -15,6 +15,5 @@ jobs:
         GPG_PASSPHRASE: ${{ secrets.GPG_PASS }}
         GPG_KEY: ${{ secrets.GPG_SECRET }}
     steps:
-      - shell: bash
       - run: |
           pacman -Syu
