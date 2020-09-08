@@ -14,9 +14,9 @@ jobs:
       env:
         PKGDEST: /home/builder/packages
     steps:
+      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
       - uses: actions/checkout@v2
       - run: ls /github/workspace
-#     - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
 #     - run: useradd -m builder
 #     - run: mkdir -p /home/builder/packages
 #     - run: su builder -c "echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg"
