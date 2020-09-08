@@ -83,7 +83,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
 	'4002-keyboard-backlight.patch'
 	'5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
 	'5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
-	'camera.patch'
+  '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
 	'sphinx-workaround.patch'
 	'wifi.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
@@ -127,7 +127,7 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
             '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
-            '8e8fb392a95f71ae63df14199b9671a75a7e819e75d54a6e2767d6ea5b86bc6a'
+            '1c2363d3f577b58c5d6b2b7919b0d77a8615701adc36fdf31d63c46e61c73e01'
             '25e1aac0d44d72e377f08e4f4b90351cffcacc0be63e02a4033cb99f10cc9fe7'
             'c70118659c5cf6a5c7f060c941d46fdd3b1e6d28f2b62c24a941745f2b3c4732'
             '3855aa07fab97d202900216951225b6952d7c716258a3c3727df8e6277289ee0'
@@ -135,12 +135,12 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '3c8a361370ed3ee094e2c8af1ff5360fd78f24e387c250904031fb70e8f2bb6e'
             '8e43d95104301913737e5d73860f0e21bb0e5e25dcfd0f16d48a0715b38c98a1'
             'e1d72fdb0a7a66a6f3fc8afb6fe056f28cfa088c1cc9c799b93405b62a274b96'
-            'a6c070d7b7444d711d9cb6b28bccb774228864132ef83dd3a291df3353e85465'
+            '4bc378ac08542bec266f6569f8e21c7fdd140c0e2492a259454376281b1a3132'
             '0318952f59efdce4dc72703adc764940db6fdff184960c27a23a80c3413d8a60'
             'e632f2959efca848fd28acb5e278cc476f8fb54d70ca95272b0a76add47e474e'
-            '717f7fc70a3e3fcfa5ffbac505c8259c1d86718ca1ca6593e8925dac3d29a835'
+            'eb5134e6b7415528547120e661aa58d7125cc657e982c924989d7a63d253d85e'
             '8cb21e0b3411327b627a9dd15b8eb773295a0d2782b1a41b2a8839d1b2f5778c'
-            '24c5826ac641970eccae645ec491691e82dc2248440bf5bd3517e78a5974c330')
+            '17f11a531e975f401449e5a0e230c596cdaff51c95a9e7b70bc7ce9455a1f0e1')
 prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
@@ -282,8 +282,8 @@ prepare() {
   patch -Np1 -i "${srcdir}/5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch"
   msg2 "brcmfmac-Add-ability-to-manually-specify-FW-rambase"
   patch -Np1 -i "${srcdir}/5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch"
-  msg2 "camera"
-  patch -Np1 -i "${srcdir}/camera.patch"
+  msg2 "media-uvcvideo-Add-support-for-Apple-T2-attached-iSi"
+  patch -Np1 -i "${srcdir}/6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch"
   msg2 "sphinx-workaround"
   patch -Np1 -i "${srcdir}/sphinx-workaround.patch"
   msg2 "wifi"
