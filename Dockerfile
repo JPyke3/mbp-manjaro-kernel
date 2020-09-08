@@ -15,6 +15,7 @@ RUN [ "pacman", "-Syu", "git",\
     "kmod",\
     "xmlto",\
     "base-devel",\
+    "gpg"\
     "--noconfirm" ]
 
 # Create a new user for mkpkg
@@ -29,7 +30,9 @@ RUN [ "git", "clone", "https://github.com/JPyke3/linux57-mbp-manjaro", "/home/bu
 
 WORKDIR /home/builder/linux57-mbp-manjaro
 
+RUN [ "chmod", "+x", "docker-commands.sh" ]
+
 # Set the out dir for the packages
 ENV PKGDEST=/home/builder/packages
 
-ENTRYPOINT [ "makepkg", "-s" ]
+ENTRYPOINT [ "./docker-commands.sh" ]
