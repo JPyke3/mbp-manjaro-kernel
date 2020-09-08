@@ -14,12 +14,16 @@ jobs:
       env:
         PKGDEST: /home/builder/packages
     steps:
-      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
+      - run: pacman -Syu gnupg --noconfirm
         name: Update image and Download Depends
       - run: useradd -m builder
         name: Add Builder User
       - run: echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg
-      - run: su builder -c "GPG_TTY=$(tty) gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg; touch /home/builder/file; gpg --batch --passphrase ${{ secrets.GPG_PASS }} --sign /home/builder/file"
+      - run: | 
+          su builder -c\
+          "GPG_TTY=$(tty) gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg;\
+          touch /home/builder/file;\
+          gpg --batch --passphrase ${{ secrets.GPG_PASS }} --sign /home/builder/file"
 #        name: Export GPG key from secret to a file
 #      - uses: actions/checkout@v2
 #        name: Checkout the Repository
