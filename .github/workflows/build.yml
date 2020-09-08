@@ -15,5 +15,7 @@ jobs:
         GPG_PASSPHRASE: ${{ secrets.GPG_PASS }}
         GPG_KEY: ${{ secrets.GPG_SECRET }}
     steps:
-      - run: |
-          pacman -Syu
+      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
+      - run: useradd -m builder
+      - run: su builder
+      - run: mkdir -p ~/packages
