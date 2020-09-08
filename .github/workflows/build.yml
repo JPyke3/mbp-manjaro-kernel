@@ -10,11 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: jpyke3/mbp-manjaro-linux57
+      image: manjarolinux/base
       env: 
         GPG_PASSPHRASE: ${{ secrets.GPG_PASS }}
         GPG_KEY: ${{ secrets.GPG_SECRET }}
     steps:
+      - shell: bash
       - run: |
-          gpg --import --batch --passphrase $GPG_PASSPHRASE <(echo -e $GPG_KEY);
-          makepkg -s --sign
+          pacman -Syu
