@@ -14,3 +14,7 @@ jobs:
       env: 
         GPG_PASSPHRASE: ${{ secrets.GPG_PASS }}
         GPG_KEY: ${{ secrets.GPG_SECRET }}
+    steps:
+      - run: |
+          gpg --import --batch --passphrase $GPG_PASSPHRASE <(echo -e $GPG_KEY);
+          makepkg -s --sign
