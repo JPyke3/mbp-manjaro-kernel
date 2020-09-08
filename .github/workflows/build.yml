@@ -17,5 +17,6 @@ jobs:
       - run: su builder
       - run: mkdir -p ~/packages
       - uses: actions/checkout@v2.3.2
-      - run: gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} <(echo -e ${{ secrets.GPG_SECRET }})
+      - run: echo -e ${{ secrets.GPG_SECRET}} > key.gpg
+      - run: gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} key.gpg
       - run: makepkg -s --sign
