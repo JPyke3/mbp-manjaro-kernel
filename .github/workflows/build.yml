@@ -32,13 +32,13 @@ jobs:
       - run: chown builder:builder -R /home/builder
         name: Give the builder user ownership of it's own home dir
       - run: su builder -c "gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg; 
-      - run: |
+      - name: Impoart GPG key CD to makepkg dir and compile the kernel
+        run: |
           su builder -c\
           "export GPG_TTY=$(tty);\
           gpg --import --batch --passphrase \"${{ secrets.GPG_PASS }}\" /home/builder/key.gpg;\
           cd /home/builder/\"$(echo -e \"$GITHUB_REPOSITORY\" | sed 's/.*\///g')\";\
           makepkg -s --sign"
-        name: Impoart GPG key CD to makepkg dir and compile the kernel
       - uses: actions/upload-artifact@v2
         name: Generate Artifacts
         if: ${{ always() }}
