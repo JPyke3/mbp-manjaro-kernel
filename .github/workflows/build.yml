@@ -14,12 +14,25 @@ jobs:
       env:
         PKGDEST: /home/builder/packages
     steps:
-      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
+      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfim
+        name: Update image and Download Depends
       - uses: actions/checkout@v2
+        name: Checkout the Repository
       - run: useradd -m builder
+        name: Add Builder User
       - run: cp -r /__w/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')" /home/builder/
+        name: Copy Repository to Builder Home Directory
       - run: mkdir -p /home/builder/packages
+        name: Create final package location
       - run: echo -e "${{ secrets.GPG_SECRET}}" >> /home/builder/key.gpg
+        name: Export GPG key from secret to a file
       - run: chown builder:builder -R /home/builder
+        name: Give the builder user ownership of it's own home dir
       - run: su builder -c "gpg --import --batch --passphrase ${{ secrets.GPG_PASS }} /home/builder/key.gpg"
+        name: Import GPG key
       - run: su builder -c "cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s --sign"
+        name: CD to makepkg dir and compile the kernel
+      - uses: actions/upload-artifact@v2
+        name: Generate Artifacts
+        with:
+          path: /home/builder/packages/
