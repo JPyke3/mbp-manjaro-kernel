@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: manjarolinux/base
+      env:
+        PKGDEST: /home/builder/packages
+    steps:
+      - run: pacman -Syu git fakeroot bc docbook-xsl elfutils inetutils kmod xmlto base-devel gnupg --noconfirm
+        name: Update image and Download Depends
+      - uses: actions/checkout@v2
+        name: Checkout the Repository
+      - run: useradd -m builder
+        name: Add Builder User
+      - run: cp -r /__w/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')" /home/builder/
+        name: Copy Repository to Builder Home Directory
+      - run: mkdir -p /home/builder/packages
+        name: Create final package location
+      - run: chown builder:builder -R /home/builder
+        name: Chown builder home dir
+      - run: su builder -c "cd /home/builder/"$(echo -e "$GITHUB_REPOSITORY" | sed 's/.*\///g')"; makepkg -s"
+        name: Compile the Kernel
+      - uses: actions/upload-artifact@v2
+        name: Generate Artifacts
+        if: ${{ always() }}
+        with:
+          path: /home/builder/packages/
