@@ -14,7 +14,6 @@ pkgname=('linux58-mbp' 'linux58-mbp-headers')
 _kernelname=-MANJARO-mbp
 _basekernel=5.8
 _basever=58
-_aufs=20200622
 pkgver=5.8.8
 pkgrel=2
 arch=('x86_64')
@@ -30,22 +29,10 @@ makedepends=('bc'
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
-        # the main kernel config files
-        # AUFS Patches
-        "aufs5.x-rcN-${_aufs}.patch"
-        'aufs5-base.patch'
-        'aufs5-kbuild.patch'
-        'aufs5-loopback.patch'
-        'aufs5-mmap.patch'
-        'aufs5-standalone.patch'
-        'tmpfs-idr.patch'
-        'vfs-ino.patch'
+        # The main kernel config files
+        'config' 'config.aufs' 'config.anbox'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
-        '0001-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_GUEST_CAPABILITIES-ioctl.patch'
-        '0001-iwlwifi-Make-some-Killer-Wireless-AC-1550-cards-working-again.patch'
-        '0001-pci-edr-log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-events.patch'
-        'config' 'config.aufs' 'config.anbox'
         # MANJARO Patches
         '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
@@ -68,38 +55,27 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
         '0013-bootsplash.patch'
-	#mbp
-	'2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch'
-	'3001-applesmc-convert-static-structures-to-drvdata.patch'
-	'3002-applesmc-make-io-port-base-addr-dynamic.patch'
-	'3003-applesmc-switch-to-acpi_device-from-platform.patch'
-	'3004-applesmc-key-interface-wrappers.patch'
-	'3005-applesmc-basic-mmio-interface-implementation.patch'
-	'3006-applesmc-fan-support-on-T2-Macs.patch'
-	'4001-touchpad.patch'
-	'4002-keyboard-backlight.patch'
-	'5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
-	'5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
-  '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
-	'sphinx-workaround.patch'
-	'wifi.patch')
+        #mbp
+        '2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch'
+        '3001-applesmc-convert-static-structures-to-drvdata.patch'
+        '3002-applesmc-make-io-port-base-addr-dynamic.patch'
+        '3003-applesmc-switch-to-acpi_device-from-platform.patch'
+        '3004-applesmc-key-interface-wrappers.patch'
+        '3005-applesmc-basic-mmio-interface-implementation.patch'
+        '3006-applesmc-fan-support-on-T2-Macs.patch'
+        '4001-touchpad.patch'
+        '4002-keyboard-backlight.patch'
+        '5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
+        '5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
+        '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
+        'sphinx-workaround.patch'
+        'wifi.patch')
 sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
             '4cfc08e0e26f824eb876b9ebd8bb29f3739a2790e949a514ce31f7f5d58c8c44'
-            'd9a9d1a3410c82cfaa282dd139429bedf4fa07dde904eefcf3ac053d70ad2770'
-            'a320441bd4540eaf6ed10bbcfb9714bd6d358852aacf0da63330c40a1ad3732c'
-            '2ccc807cc6f0fc21f8e23e2e9fd080eb1bc12c3450779e7025ebeaeee2ecffb4'
-            '842d2cb05d5796479654634a3cc6623513cefbfdf135a1471dbbfa994166ec14'
-            '499d25d110f9867e6aa3a9eb085005d7e59795ab4e0023d6fce21e7b8c21f383'
-            '3e45b6d925fc7490ce6597b7d353dd7a8e0681dd192e241f8c6491341673e30d'
-            '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
-            '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
-            '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
-            '095804fb1045f6ccb52825d0d8c3aad1237e919f30586034267918a15d1249f6'
-            'bdd0344427007d11412c37294559dc71090dfd0b0e6bd4b7008f32810ba797c4'
-            'd1aba2b46e810374e49296760959da48e58d88c36e377479a54e7636e1ba7dc0'
             '4f2c7860febbc67cd314e768e8f1c85b33bc13c1003f10731ffe57a7c9a30e36'
             'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
             'c079a87a7de0001f5f2b7a42a822c262e31f19f2c547613885f273822c9d4dcc'
+            '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
             '7823d7488f42bc4ed7dfae6d1014dbde679d8b862c9a3697a39ba0dae5918978'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
             '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e'
