@@ -1,17 +1,20 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
+# Maintainer: Bernhard Landauer <bernhard[at]manjaro[dot]org>
 # Maintainer: Helmut Stult <helmut[at]manjaro[dot]org>
+
+# MBP:
+# Jacob Pyke <pyke.jacob1@gmail.com>
 
 # Arch credits:
 # Tobias Powalowski <tpowa@archlinux.org>
 # Thomas Baechler <thomas@archlinux.org>
 
-pkgbase=linux57-mbp
-pkgname=('linux57-mbp' 'linux57-mbp-headers' 'linux57-mbp-docs')
+pkgbase=linux58-mbp
+pkgname=('linux58-mbp' 'linux58-mbp-headers')
 _kernelname=-MANJARO-mbp
-_basekernel=5.7
-_basever=57
-_aufs=20200622
-pkgver=5.7.9
+_basekernel=5.8
+_basever=58
+pkgver=5.8.8
 pkgrel=2
 arch=('x86_64')
 url="http://www.kernel.org/"
@@ -27,7 +30,6 @@ options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         # the main kernel config files
-        'config' 'config.aufs'
         # AUFS Patches
         "aufs5.x-rcN-${_aufs}.patch"
         'aufs5-base.patch'
@@ -42,6 +44,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0001-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_GUEST_CAPABILITIES-ioctl.patch'
         '0001-iwlwifi-Make-some-Killer-Wireless-AC-1550-cards-working-again.patch'
         '0001-pci-edr-log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-events.patch'
+        'config' 'config.aufs' 'config.anbox'
         # MANJARO Patches
         '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
@@ -96,39 +99,7 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             'bdd0344427007d11412c37294559dc71090dfd0b0e6bd4b7008f32810ba797c4'
             'd1aba2b46e810374e49296760959da48e58d88c36e377479a54e7636e1ba7dc0'
             '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
-            '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
-            '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e'
-            '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
-            '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
-            'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
-            '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
-            'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
-            'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
-            '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
-            '1144d51e5eb980fceeec16004f3645ed04a60fac9e0c7cf88a15c5c1e7a4b89e'
-            'dd4b69def2efacf4a6c442202ad5cb93d492c03886d7c61de87696e5a83e2846'
-            '028b07f0c954f70ca37237b62e04103e81f7c658bb8bd65d7d3c2ace301297dc'
-            'c8b0cb231659d33c3cfaed4b1f8d7c8305ab170bdd4c77fce85270d7b6a68000'
-            '8dbb5ab3cb99e48d97d4e2f2e3df5d0de66f3721b4f7fd94a708089f53245c77'
-            'a7aefeacf22c600fafd9e040a985a913643095db7272c296b77a0a651c6a140a'
-            'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
-            '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
-            '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
-            '1c2363d3f577b58c5d6b2b7919b0d77a8615701adc36fdf31d63c46e61c73e01'
-            '25e1aac0d44d72e377f08e4f4b90351cffcacc0be63e02a4033cb99f10cc9fe7'
-            'c70118659c5cf6a5c7f060c941d46fdd3b1e6d28f2b62c24a941745f2b3c4732'
-            '3855aa07fab97d202900216951225b6952d7c716258a3c3727df8e6277289ee0'
-            '9e5e0b45fe007ed214049b26b44174ee8f61376076e80fd33bba9fdac001e157'
-            '3c8a361370ed3ee094e2c8af1ff5360fd78f24e387c250904031fb70e8f2bb6e'
-            '8e43d95104301913737e5d73860f0e21bb0e5e25dcfd0f16d48a0715b38c98a1'
-            'e1d72fdb0a7a66a6f3fc8afb6fe056f28cfa088c1cc9c799b93405b62a274b96'
-            '4bc378ac08542bec266f6569f8e21c7fdd140c0e2492a259454376281b1a3132'
-            '0318952f59efdce4dc72703adc764940db6fdff184960c27a23a80c3413d8a60'
-            'e632f2959efca848fd28acb5e278cc476f8fb54d70ca95272b0a76add47e474e'
-            'eb5134e6b7415528547120e661aa58d7125cc657e982c924989d7a63d253d85e'
-            '8cb21e0b3411327b627a9dd15b8eb773295a0d2782b1a41b2a8839d1b2f5778c'
-            '17f11a531e975f401449e5a0e230c596cdaff51c95a9e7b70bc7ce9455a1f0e1')
+            '0013-bootsplash.gitpatch')
 prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
@@ -136,123 +107,19 @@ prepare() {
   msg "add upstream patch"
   patch -p1 -i "${srcdir}/patch-${pkgver}"
 
-  # add latest fixes from stable queue, if needed
-  # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
-  # enable only if you have "gen-stable-queue-patch.sh" executed before
-  #patch -Np1 -i "${srcdir}/prepatch-${_basekernel}.patch"
+  local src
+  for src in "${source[@]}"; do
+      src="${src%%::*}"
+      src="${src##*/}"
+      [[ $src = *.patch ]] || continue
+      msg2 "Applying patch: $src..."
+      patch -Np1 < "../$src"
+  done
 
-  # disable USER_NS for non-root users by default
-  msg2 "PATCH: 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER"
-  patch -Np1 -i "${srcdir}/0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch"
-
-  # other fixes by Arch
-  patch -Np1 -i "${srcdir}/0001-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_GUEST_CAPABILITIES-ioctl.patch"
-  patch -Np1 -i "${srcdir}/0001-iwlwifi-Make-some-Killer-Wireless-AC-1550-cards-working-again.patch"
-  patch -Np1 -i "${srcdir}/0001-pci-edr-log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-events.patch"
-
-  # add patches for snapd
-  # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
-  msg "add patches for snapd"
-  msg2 "0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules"
-  patch -Np1 -i "${srcdir}/0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch"
-  msg2 "0002-apparmor-af_unix-mediation"
-  patch -Np1 -i "${srcdir}/0002-apparmor-af_unix-mediation.patch"
-  msg2 "0003-apparmor-fix-use-after-free-in-sk_peer_label"
-  patch -Np1 -i "${srcdir}/0003-apparmor-fix-use-after-free-in-sk_peer_label.patch"
-  msg2 "0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
-  patch -Np1 -i "${srcdir}/0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch"
-
-  msg "nuvoton hwmon driver patch"
-  # https://twitter.com/vskye11/status/1216240051639791616
-  patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
-
-  # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
-  msg2 "0001-futex.patch"
-  patch -Np1 -i "${srcdir}/0001-futex.patch"
-
-  # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
-  msg "Add bootsplash"
-  msg2 "0001-bootsplash."
-  patch -Np1 -i "${srcdir}/0001-bootsplash.patch"
-  msg2 "0002-bootsplash"
-  patch -Np1 -i "${srcdir}/0002-bootsplash.patch"
-  msg2 "0003-bootsplash"
-  patch -Np1 -i "${srcdir}/0003-bootsplash.patch"
-  msg2 "0004-bootsplash"
-  patch -Np1 -i "${srcdir}/0004-bootsplash.patch"
-  msg2 "0005-bootsplash"
-  patch -Np1 -i "${srcdir}/0005-bootsplash.patch"
-  msg2 "0006-bootsplash"
-  patch -Np1 -i "${srcdir}/0006-bootsplash.patch"
-  msg2 "0007-bootsplash"
-  patch -Np1 -i "${srcdir}/0007-bootsplash.patch"
-  msg2 "0008-bootsplash"
-  patch -Np1 -i "${srcdir}/0008-bootsplash.patch"
-  msg2 "0009-bootsplash"
-  patch -Np1 -i "${srcdir}/0009-bootsplash.patch"
-  msg2 "0010-bootsplash."
-  patch -Np1 -i "${srcdir}/0010-bootsplash.patch"
-  msg2 "0011-bootsplash"
-  patch -Np1 -i "${srcdir}/0011-bootsplash.patch"
-  msg2 "0012-bootsplash"
-  patch -Np1 -i "${srcdir}/0012-bootsplash.patch"
-  # use git-apply to add binary files
   msg2 "0013-bootsplash"
-  git apply -p1 < "${srcdir}/0013-bootsplash.patch"
-
-  # add aufs5 support
-  msg "add aufs5 support"
-  msg2 "aufs5.x-rcN-${_aufs}"
-  patch -Np1 -i "${srcdir}/aufs5.x-rcN-${_aufs}.patch"
-  msg2 "aufs5-base"
-  patch -Np1 -i "${srcdir}/aufs5-base.patch"
-  msg2 "aufs5-kbuild"
-  patch -Np1 -i "${srcdir}/aufs5-kbuild.patch"
-  msg2 "aufs5-loopback"
-  patch -Np1 -i "${srcdir}/aufs5-loopback.patch"
-  msg2 "aufs5-mmap"
-  patch -Np1 -i "${srcdir}/aufs5-mmap.patch"
-  msg2 "aufs5-standalone"
-  patch -Np1 -i "${srcdir}/aufs5-standalone.patch"
-  msg2 "tmpfs-idr"
-  patch -Np1 -i "${srcdir}/tmpfs-idr.patch"
-  msg2 "vfs-ino"
-  patch -Np1 -i "${srcdir}/vfs-ino.patch"
-
-    #add mbp support
-  msg "add mbp support"
-  msg2 "drm-amd-display-force-link-rate"
-  patch -Np1 -i "${srcdir}/2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch"
-  msg2 "applesmc-convert-static-structures-to-drvdata"
-  patch -Np1 -i "${srcdir}/3001-applesmc-convert-static-structures-to-drvdata.patch"
-  msg2 "applesmc-switch-to-acpi-device-from-platform"
-  patch -Np1 -i "${srcdir}/3002-applesmc-make-io-port-base-addr-dynamic.patch"
-  msg2 "applesmc-switch-to-acpi_device-from-platform"
-  patch -Np1 -i "${srcdir}/3003-applesmc-switch-to-acpi_device-from-platform.patch"
-  msg2 "applesmc-key-interface-wrappers"
-  patch -Np1 -i "${srcdir}/3004-applesmc-key-interface-wrappers.patch"
-  msg2 "applesmc-basic-mmio-interface-implementation"
-  patch -Np1 -i "${srcdir}/3005-applesmc-basic-mmio-interface-implementation.patch"
-  msg2 "applesmc-fan-support-on-T2-Macs"
-  patch -Np1 -i "${srcdir}/3006-applesmc-fan-support-on-T2-Macs.patch"
-  msg2 "touchpad"
-  patch -Np1 -i "${srcdir}/4001-touchpad.patch"
-  msg2 "keyboard-backlight"
-  patch -Np1 -i "${srcdir}/4002-keyboard-backlight.patch"
-  msg2 "brcmfmac-move-brcmf_mp_device-into-its-own-header"
-  patch -Np1 -i "${srcdir}/5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch"
-  msg2 "brcmfmac-Add-ability-to-manually-specify-FW-rambase"
-  patch -Np1 -i "${srcdir}/5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch"
-  msg2 "media-uvcvideo-Add-support-for-Apple-T2-attached-iSi"
-  patch -Np1 -i "${srcdir}/6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch"
-  msg2 "sphinx-workaround"
-  patch -Np1 -i "${srcdir}/sphinx-workaround.patch"
-  msg2 "wifi"
-  patch -Np1 -i "${srcdir}/wifi.patch"
+  git apply -p1 < "${srcdir}/0013-bootsplash.gitpatch"
 
   cat "${srcdir}/config" > ./.config
-
-  cat "${srcdir}/config.aufs" >> ./.config
 
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
@@ -288,7 +155,7 @@ build() {
   make ${MAKEFLAGS} LOCALVERSION= bzImage modules
 }
 
-package_linux57-mbp() {
+package_linux58-mbp() {
   pkgdesc="The ${pkgbase/linux/Linux} kernel and modules"
   depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=27')
   optdepends=('crda: to set the correct wireless channels of your country')
@@ -333,7 +200,7 @@ package_linux57-mbp() {
   install -Dt "${pkgdir}/usr/lib/modules/${_kernver}/build" -m644 vmlinux
 }
 
-package_linux57-mbp-headers() {
+package_linux58-mbp-headers() {
   pkgdesc="Header files and scripts for building modules for ${pkgbase/linux/Linux} kernel"
   provides=("linux-headers=$pkgver")
 
