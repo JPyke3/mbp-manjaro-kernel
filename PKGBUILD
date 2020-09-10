@@ -54,7 +54,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0010-bootsplash.patch'
         '0011-bootsplash.patch'
         '0012-bootsplash.patch'
-        '0013-bootsplash.patch'
+        '0013-bootsplash.gitpatch'
         #mbp
         '2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch'
         '3001-applesmc-convert-static-structures-to-drvdata.patch'
