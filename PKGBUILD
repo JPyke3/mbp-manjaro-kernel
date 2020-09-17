@@ -29,8 +29,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         # the main kernel config files
         'config' 'config.aufs'
         # AUFS Patches
-        "aufs5.x-rcN-${_aufs}.patch"
-        'aufs5-base.patch'
+        "aufs5.x-rcN-${_aufs}.patch" 'aufs5-base.patch'
         'aufs5-kbuild.patch'
         'aufs5-loopback.patch'
         'aufs5-mmap.patch'
@@ -247,6 +246,8 @@ prepare() {
   patch -Np1 -i "${srcdir}/5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch"
   msg2 "media-uvcvideo-Add-support-for-Apple-T2-attached-iSi"
   patch -Np1 -i "${srcdir}/6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch"
+  msg2 "drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch"
+  patch -Np1 -i "${srcdir}/7001-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch"
   msg2 "sphinx-workaround"
   patch -Np1 -i "${srcdir}/sphinx-workaround.patch"
   msg2 "wifi"
