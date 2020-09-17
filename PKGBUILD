@@ -29,8 +29,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         # the main kernel config files
         'config' 'config.aufs'
         # AUFS Patches
-        "aufs5.x-rcN-${_aufs}.patch"
-        'aufs5-base.patch'
+        "aufs5.x-rcN-${_aufs}.patch" 'aufs5-base.patch'
         'aufs5-kbuild.patch'
         'aufs5-loopback.patch'
         'aufs5-mmap.patch'
@@ -76,7 +75,8 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
 	'4002-keyboard-backlight.patch'
 	'5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
 	'5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
-  '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
+    '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
+    '7001-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch'
 	'sphinx-workaround.patch'
 	'wifi.patch')
 sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
@@ -127,6 +127,7 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '0318952f59efdce4dc72703adc764940db6fdff184960c27a23a80c3413d8a60'
             'e632f2959efca848fd28acb5e278cc476f8fb54d70ca95272b0a76add47e474e'
             'eb5134e6b7415528547120e661aa58d7125cc657e982c924989d7a63d253d85e'
+            'c00e29fc39848422049faa341134c236589a7f1c9654695fd19fd5d4f031c1b5'
             '8cb21e0b3411327b627a9dd15b8eb773295a0d2782b1a41b2a8839d1b2f5778c'
             '17f11a531e975f401449e5a0e230c596cdaff51c95a9e7b70bc7ce9455a1f0e1')
 prepare() {
@@ -245,6 +246,8 @@ prepare() {
   patch -Np1 -i "${srcdir}/5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch"
   msg2 "media-uvcvideo-Add-support-for-Apple-T2-attached-iSi"
   patch -Np1 -i "${srcdir}/6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch"
+  msg2 "drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch"
+  patch -Np1 -i "${srcdir}/7001-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch"
   msg2 "sphinx-workaround"
   patch -Np1 -i "${srcdir}/sphinx-workaround.patch"
   msg2 "wifi"
