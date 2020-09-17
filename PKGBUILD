@@ -68,6 +68,7 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
         '5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
         '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
+        '7001-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch'
         'sphinx-workaround.patch'
         'wifi.patch')
 sha256sums=('e7f75186aa0642114af8f19d99559937300ca27acaf7451b36d4f9b0f85cf1f5'
@@ -276,7 +277,7 @@ package_linux58-mbp-headers() {
   done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
 }
 
-package_linux57-mbp-docs() {
+package_linux58-mbp-docs() {
   pkgdesc="Documentation for the $pkgdesc kernel"
 
   cd "${srcdir}/linux-${_basekernel}"
