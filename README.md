@@ -25,6 +25,7 @@ makepkg -si
  - Aunali1 <https://github.com/aunali1>
  - MCMrARM <https://github.com/MCMrARM>
  - marcosfad <https://github.com/marcosfad>
+ - JPyke3 <https://github.com/JPyke3>
 
 ## Resources
 
