@@ -1,8 +1,50 @@
+From 994279ebfc0d19e185792fb11cacb63e6750e22e Mon Sep 17 00:00:00 2001
+From: "Jan Alexander Steffens (heftig)" <heftig@archlinux.org>
+Date: Mon, 3 Aug 2020 21:18:53 +0200
+Subject: [PATCH] ZEN: Add OpenRGB patches
+
+Squashed commit of the following:
+
+commit 942ded8f8652a4b4e6b46d04938bb66f1eac4c78
+Author: Steven Barrett <steven@liquorix.net>
+Date:   Sat Jul 4 21:28:54 2020 -0500
+
+    openrgb: Deduplicate piix4 setup for HUDSON2/KERNCZ SMBUS
+
+    In the original OpenRGB patches, the initialization code for CZ
+    secondary SMBus controllers was copied.  Later, an upstream commit
+    landed in 5.7 stable that combined the initialization code for both
+    primary/secondary smbus channels.
+
+    Combine the initialization code ahead of time so upstream merges
+    correctly with OpenRGB.
+
+    Fixes: https://github.com/zen-kernel/zen-kernel/issues/176
+
+commit a65e3ecf90b24fd44689cc0713af602965ffaf4e
+Author: Steven Barrett <steven@liquorix.net>
+Date:   Wed Jun 17 14:24:20 2020 -0500
+
+    Add OpenRGB patch - 0c45e26c
+
+    Source:
+    https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/master/OpenRGB.patch
+
+    History:
+    https://gitlab.com/CalcProgrammer1/OpenRGB/-/commits/master/OpenRGB.patch
+---
+ drivers/i2c/busses/Kconfig       |   9 +
+ drivers/i2c/busses/Makefile      |   1 +
+ drivers/i2c/busses/i2c-nct6775.c | 647 +++++++++++++++++++++++++++++++
+ drivers/i2c/busses/i2c-piix4.c   |   4 +-
+ 4 files changed, 659 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/i2c/busses/i2c-nct6775.c
+
 diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 09367fc014c3..6d4de015000b 100644
+index 735bf31a3fdff..3bf00363cd769 100644
 --- a/drivers/i2c/busses/Kconfig
 +++ b/drivers/i2c/busses/Kconfig
-@@ -216,6 +216,15 @@ config I2C_CHT_WC
+@@ -217,6 +217,15 @@ config I2C_CHT_WC
  	  combined with a FUSB302 Type-C port-controller as such it is advised
  	  to also select CONFIG_TYPEC_FUSB302=m.
  
@@ -19,7 +61,7 @@ index 09367fc014c3..6d4de015000b 100644
  	tristate "Nvidia nForce2, nForce3 and nForce4"
  	depends on PCI
 diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index 80c23895eaaf..57a2daf0b94e 100644
+index 306d5dc3f417f..7e75d45c64e5b 100644
 --- a/drivers/i2c/busses/Makefile
 +++ b/drivers/i2c/busses/Makefile
 @@ -17,6 +17,7 @@ obj-$(CONFIG_I2C_CHT_WC)	+= i2c-cht-wc.o
@@ -32,10 +74,10 @@ index 80c23895eaaf..57a2daf0b94e 100644
  obj-$(CONFIG_I2C_NVIDIA_GPU)	+= i2c-nvidia-gpu.o
 diff --git a/drivers/i2c/busses/i2c-nct6775.c b/drivers/i2c/busses/i2c-nct6775.c
 new file mode 100644
-index 000000000000..d788c31798cf
+index 0000000000000..0462f09520431
 --- /dev/null
 +++ b/drivers/i2c/busses/i2c-nct6775.c
-@@ -0,0 +1,617 @@
+@@ -0,0 +1,647 @@
 +/*
 + * i2c-nct6775 - Driver for the SMBus master functionality of
 + *	       Nuvoton NCT677x Super-I/O chips
@@ -71,6 +113,7 @@ index 000000000000..d788c31798cf
 +#include <linux/hwmon-vid.h>
 +#include <linux/err.h>
 +#include <linux/mutex.h>
++#include <linux/delay.h>
 +#include <linux/ioport.h>
 +#include <linux/i2c.h>
 +#include <linux/acpi.h>
@@ -114,6 +157,9 @@ index 000000000000..d788c31798cf
 +#define NCT6793D_MANUAL_ACTIVE  4
 +
 +#define NCT6775_LD_SMBUS		0x0B
++
++/* Other settings */
++#define MAX_RETRIES		400
 +
 +enum kinds { nct6106, nct6775, nct6776, nct6779, nct6791, nct6792, nct6793,
 +	     nct6795, nct6796, nct6798 };
@@ -237,10 +283,13 @@ index 000000000000..d788c31798cf
 +	struct i2c_nct6775_adapdata *adapdata = i2c_get_adapdata(adap);
 +	unsigned short nuvoton_nct6793d_smba = adapdata->smba;
 +	int i, len, cnt;
++	union i2c_smbus_data tmp_data;
++	int timeout = 0;
 +
++	tmp_data.word = 0;
 +	cnt = 0;
 +	len = 0;
-+	
++
 +	outb_p(NCT6793D_SOFT_RESET, SMBHSTCTL);
 +
 +	switch (size) {
@@ -248,13 +297,14 @@ index 000000000000..d788c31798cf
 +			outb_p((addr << 1) | read_write,
 +			       SMBHSTADD);
 +			break;
-+		case I2C_SMBUS_BYTE:
 +		case I2C_SMBUS_BYTE_DATA:
++			tmp_data.byte = data->byte;
++		case I2C_SMBUS_BYTE:
 +			outb_p((addr << 1) | read_write,
 +			       SMBHSTADD);
 +			outb_p(command, SMBHSTIDX);
 +			if (read_write == I2C_SMBUS_WRITE) {
-+				outb_p(data->byte, SMBHSTDAT);
++				outb_p(tmp_data.byte, SMBHSTDAT);
 +				outb_p(NCT6793D_WRITE_BYTE, SMBHSTCMD);
 +			}
 +			else {
@@ -268,7 +318,7 @@ index 000000000000..d788c31798cf
 +			if (read_write == I2C_SMBUS_WRITE) {
 +				outb_p(data->word & 0xff, SMBHSTDAT);
 +				outb_p((data->word & 0xff00) >> 8, SMBHSTDAT);
-+				outb_p(NCT6793D_WRITE_WORD, SMBHSTCMD);			
++				outb_p(NCT6793D_WRITE_WORD, SMBHSTCMD);
 +			}
 +			else {
 +				outb_p(NCT6793D_READ_WORD, SMBHSTCMD);
@@ -316,7 +366,16 @@ index 000000000000..d788c31798cf
 +
 +	while ((size == I2C_SMBUS_BLOCK_DATA) && (len > 0)) {
 +		if (read_write == I2C_SMBUS_WRITE) {
-+			while ((inb_p(SMBHSTSTS) & NCT6793D_FIFO_EMPTY) == 0);
++			timeout = 0;
++			while ((inb_p(SMBHSTSTS) & NCT6793D_FIFO_EMPTY) == 0)
++			{
++				if(timeout > MAX_RETRIES)
++				{
++					return -ETIMEDOUT;
++				}
++				usleep_range(250, 500);
++				timeout++;
++			}
 +
 +			//Load more bytes into FIFO
 +			if (len >= 4) {
@@ -335,10 +394,23 @@ index 000000000000..d788c31798cf
 +				len = 0;
 +			}
 +		}
++		else {
++			return -ENOTSUPP;
++		}
++		
 +	}
 +
 +	//wait for manual mode to complete
-+	while ((inb_p(SMBHSTSTS) & NCT6793D_MANUAL_ACTIVE) != 0);
++	timeout = 0;
++	while ((inb_p(SMBHSTSTS) & NCT6793D_MANUAL_ACTIVE) != 0)
++	{
++		if(timeout > MAX_RETRIES)
++		{
++			return -ETIMEDOUT;
++		}
++		usleep_range(250, 500);
++		timeout++;
++	}
 +
 +	if ((inb_p(SMBHSTERR) & NCT6793D_NO_ACK) != 0) {    	
 +		return -ENXIO;
@@ -653,4 +725,21 @@ index 000000000000..d788c31798cf
 +
 +module_init(i2c_nct6775_init);
 +module_exit(i2c_nct6775_exit);
-\ No newline at end of file
+diff --git a/drivers/i2c/busses/i2c-piix4.c b/drivers/i2c/busses/i2c-piix4.c
+index 69740a4ff1db2..b70738fbe72a4 100644
+--- a/drivers/i2c/busses/i2c-piix4.c
++++ b/drivers/i2c/busses/i2c-piix4.c
+@@ -467,11 +467,11 @@ static int piix4_transaction(struct i2c_adapter *piix4_adapter)
+ 	if (srvrworks_csb5_delay) /* Extra delay for SERVERWORKS_CSB5 */
+ 		usleep_range(2000, 2100);
+ 	else
+-		usleep_range(250, 500);
++		usleep_range(25, 50);
+ 
+ 	while ((++timeout < MAX_TIMEOUT) &&
+ 	       ((temp = inb_p(SMBHSTSTS)) & 0x01))
+-		usleep_range(250, 500);
++		usleep_range(25, 50);
+ 
+ 	/* If the SMBus is still busy, we give up */
+ 	if (timeout == MAX_TIMEOUT) {

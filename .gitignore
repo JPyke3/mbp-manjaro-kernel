@@ -3,3 +3,11 @@ pkg/*
 *.pkg*
 *thinkpad*
 *.xz*
+0001-fix-iwlwifi.patch
+0001-lenovo-wmi1.patch
+0001-lenovo-wmi2.patch
+0001-nonupstream-navi10-vfio-reset.patch
+0002-PCI-EDR-Log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-even.patch
+0002-pinctrl-amd.patch
+0002-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_.patch
+0003-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_.patch
