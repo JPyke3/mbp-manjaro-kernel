@@ -1,15 +1,16 @@
-From bd72838cba44f93e3166e76f69c50136a65df228 Mon Sep 17 00:00:00 2001
-From: "Jan Alexander Steffens (heftig)" <jan.steffens@gmail.com>
-Date: Mon, 16 Sep 2019 04:53:20 +0200
-Subject: ZEN: Add sysctl and CONFIG to disallow unprivileged CLONE_NEWUSER
-
-Our default behavior continues to match the vanilla kernel.
----
- init/Kconfig            | 16 ++++++++++++++++
- kernel/fork.c           | 15 +++++++++++++++
- kernel/sysctl.c         | 12 ++++++++++++
- kernel/user_namespace.c |  7 +++++++
- 4 files changed, 50 insertions(+)
+--- a/include/linux/sysctl.h	2020-06-12 19:27:22.382363840 +0200
++++ b/include/linux/sysctl.h	2020-06-12 19:27:04.715697333 +0200
+@@ -204,6 +204,10 @@ extern int unaligned_enabled;
+ extern int unaligned_dump_stack;
+ extern int no_unaligned_warning;
+ 
++#ifdef CONFIG_USER_NS
++extern int unprivileged_userns_clone;
++#endif
++
+ extern struct ctl_table sysctl_mount_point[];
+ extern struct ctl_table random_table[];
+ extern struct ctl_table firmware_config_table[];
 
 diff --git a/init/Kconfig b/init/Kconfig
 index bd7d650d4a99..658f9c052151 100644
@@ -82,16 +83,6 @@ diff --git a/kernel/sysctl.c b/kernel/sysctl.c
 index 078950d9605b..baead3605bbe 100644
 --- a/kernel/sysctl.c
 +++ b/kernel/sysctl.c
-@@ -110,6 +110,9 @@ extern int core_uses_pid;
- extern char core_pattern[];
- extern unsigned int core_pipe_limit;
- #endif
-+#ifdef CONFIG_USER_NS
-+extern int unprivileged_userns_clone;
-+#endif
- extern int pid_max;
- extern int pid_max_min, pid_max_max;
- extern int percpu_pagelist_fraction;
 @@ -545,6 +548,15 @@ static struct ctl_table kern_table[] = {
  		.proc_handler	= proc_dointvec,
  	},
