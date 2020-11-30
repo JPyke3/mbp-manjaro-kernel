@@ -7,15 +7,19 @@
 # Thomas Baechler <thomas@archlinux.org>
 
 # Cloud Server
-_server=ccx51
+_server=cpx51
 
 pkgbase=linux59-mbp
 pkgname=('linux59-mbp' 'linux59-mbp-headers' 'linux59-mbp-docs')
 _kernelname=-MANJARO-mbp
 _basekernel=5.9
 _basever=59
-pkgver=5.9.11
-pkgrel=3
+_rc=rc8
+_commit=549738f15da0e5a00275977623be199fbbf7df50
+_shortcommit=${_rc}.d1004.g${_commit:0:7}
+_pkgver=${_basekernel}${_shortcommit}
+pkgver=5.9rc8.d1004.g549738f
+pkgrel=1
 arch=('x86_64')
 url="http://www.kernel.org/"
 license=('GPL2')
@@ -27,32 +31,25 @@ makedepends=('bc'
     'kmod'
     'xmlto')
 options=('!strip')
-source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
-        "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
+source=(#"https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
+        #"https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
+        "linux-${_pkgver}.zip::https://codeload.github.com/torvalds/linux/zip/$_commit"
         # the main kernel config files
         'config' 'config.anbox'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
-        '0002-Bluetooth-Fix-LL-PRivacy-BLE-device-fails-to-connect.patch'
-        '0003-Bluetooth-Fix-attempting-to-set-RPA-timeout-when-unsupported.patch'
-        '0004-efivarfs-revert-fix-memory-leak-in-efivarfs_create.patch'
         # MANJARO Patches
         '0101-i2c-nuvoton-nc677x-hwmon-driver.patch'
         '0102-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
-        '0103-futex.patch'
         '0104-revert-xhci-Add-support-for-Renesas-controller-with-memory.patch'
-        '0106-ucsi-acpi.patch'
-        '0106-ucsi.patch'
         '0201-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
         '0202-apparmor-af_unix-mediation.patch'
         '0203-apparmor-fix-use-after-free-in-sk_peer_label.patch'
         '0204-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
-        # OLED Patches
-        '0111-drm-i915-dp-Program-source-OUI-on-eDP-panels.patch'
-        '0112-WIP-drm-i915-Enable-Intel-s-HDR-backlight-interface.patch'
 
         # Lenovo + AMD
         '0302-lenovo-wmi2.patch'
+        # Temp Fixes
 
         # Bootsplash
         '0401-revert-fbcon-remove-now-unusued-softback_lines-cursor-argument.patch'
@@ -85,28 +82,18 @@ source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.x
         '0011-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
         '0012-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
         '0013-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch'
-        '0014-T2-MacBook-Wifi-Patches.patch'
-        )
-sha256sums=('3239a4ee1250bf2048be988cc8cb46c487b2c8a0de5b1b032d38394d5c6b1a06'
-            'a0f35d02672add81985b2b3e899efafb119cb3a4587e0bfbe5a0ad19b739e993'
-            '25ce822bbca6b75dde73a3207f8d9daee1ba6f8aa45c6b4ba7e9225471811d1d'
+        '0014-T2-MacBook-Wifi-Patches.patch')
+sha256sums=('9ea92b8c6d9cd632defe06de10919fa1943760bd61b2c1d1ff4fd4672dbd5e17'
+            '471bbfc37a3112197a288cf88bdba4cf44adf4e8788a2ad539ecceeb9b7c19d0'
             'fc896e5b00fad732d937bfb7b0db41922ecdb3a488bc1c1b91b201e028eed866'
             '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
-            '3c1c63194dc808b63166646d71c9fc2e690605178527bdd5528084613990207a'
-            'e216346f7c7761a53b76dea0638898e52aac9e4527a64893c9dfa9936b3c5a0d'
-            '2fd5ce56d3272b05cdd3e4dc3ebc3deb8b0f1c7893d342f5ae295bf7213cced5'
             '7823d7488f42bc4ed7dfae6d1014dbde679d8b862c9a3697a39ba0dae5918978'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
-            'b302ba6c5bbe8ed19b20207505d513208fae1e678cf4d8e7ac0b154e5fe3f456'
             '14fff25b581a0a8281a3419abd54d3bd200ede0374e685799da804f941c50f79'
-            'e9ca3a8398360fa5d8d0deb5f0c0ca3d174865bd13c91eb6e0232cdbcdb2258b'
-            '6446e388c0e13290fd99137539c6d3089994313a3a0c00305dea83faf4951137'
             '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
             '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
             'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
             '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
-            'c60c3040f90a28177a0b7718ebb85b4598d2087a3f7670be6102b0cf79a23598'
-            '12ff4aed41d3ad9a0a72124966ceeb96bb34404761221ad43bee2c810ceafe7d'
             '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
             '2b11905b63b05b25807dd64757c779da74dd4c37e36d3f7a46485b1ee5a9d326'
             '37a221c12b40122167b0a30b5a9f2fc99e2aeb94e4db58a719c2b30171c5aeb5'
@@ -122,13 +109,33 @@ sha256sums=('3239a4ee1250bf2048be988cc8cb46c487b2c8a0de5b1b032d38394d5c6b1a06'
             'e9f22cbb542591087d2d66dc6dc912b1434330ba3cd13d2df741d869a2c31e89'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
-            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef')
+            '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
+            'fe6c6a886f3c1a94d3ed1c279f158f65faef804e14aabb77dca0d015ce798cd3'
+            '19026205d1e01d7d36625357ac7dcdd5c1f6d9f8e76480c380749046fe9c9b92'
+            'b688a33d8c122ef4f3c03a638919782cb7f2b5e7723f299fe6c7f86413bb7bb0'
+            '32d83d547b1ea6ec84e3218ca5e0775cc262d2ce31861c516e8d87c2d06ac955'
+            'cc9c047be0b99f76ee4be32117b13c96d827e5d6c7f21e68ea61cf80255f8e6d'
+            'eea8b20e2b547fff0cdd5e7c86c5b0bf951c82610172df8b03f3495be219aa28'
+            '51d91c2f469b1b81ee5d307b5e8b56e332322bf6c3aafa874787d4a9eaf7fe16'
+            'd6e32a67499b8d58474af71d14d4730c8dca7bd76809553f1fb8df33893adc16'
+            'e88a1be70594453b07d7c763499bc74685f95b89446241587045d12d2fc95d34'
+            '2c89f80eea0a72280a18f8ec14e9d63728b15f95852aa8995951a656f5c08741'
+            '16a79c62a1a744bd04a35258e08c30572ac6cd7dc7f36c102088f2caafa907a0'
+            '736733271c0e622bdd1a58ea08ffb1229eecba46b64851f326b96ea90c3eb560'
+            '976f354be437879956fec61304dbc59202bf5fbc9a496f2a4e79bf9563e5350b'
+            'd46d435975d3bcc915558a2f9c8d61cdb6bad31b50a46f605e257aa0a8a35d65')
+
+pkgver() {
+  printf '%s' "${_pkgver}"
+}
+
 prepare() {
+  mv "${srcdir}/linux-${_commit}" "${srcdir}/linux-${_basekernel}"
   cd "${srcdir}/linux-${_basekernel}"
 
   # add upstream patch
-  msg "add upstream patch"
-  patch -p1 -i "${srcdir}/patch-${pkgver}"
+#  msg "add upstream patch"
+#  patch -p1 -i "${srcdir}/patch-${pkgver}"
 
   local src
   for src in "${source[@]}"; do
@@ -153,6 +160,9 @@ prepare() {
 
   msg "set extraversion to pkgrel"
   sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
+
+  # set patchlevel to 9
+  sed -ri "s|^(PATCHLEVEL =).*|\1 9|" Makefile
 
   msg "don't run depmod on 'make install'"
   # We'll do this ourselves in packaging
