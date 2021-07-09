@@ -1,108 +1,114 @@
 # Maintainer: Philip Müller <philm[at]manjaro[dot]org>
+# Maintainer: Bernhard Landauer <bernhard[at]manjaro[dot]org>
 # Maintainer: Helmut Stult <helmut[at]manjaro[dot]org>
 
 # Arch credits:
 # Tobias Powalowski <tpowa@archlinux.org>
 # Thomas Baechler <thomas@archlinux.org>
 
-pkgbase=linux57-mbp
-pkgname=('linux57-mbp' 'linux57-mbp-headers' 'linux57-mbp-docs')
+# Cloud Server
+_server=cpx51
+
+pkgbase=linux510-mbp
+pkgname=('linux510-mbp' 'linux510-mbp-headers')
 _kernelname=-MANJARO-mbp
-_basekernel=5.7
-_basever=57
-_aufs=20200622
-pkgver=5.7.9
-pkgrel=2
+_basekernel=5.10
+_basever=510
+pkgver=5.10.48
+pkgrel=1
 arch=('x86_64')
-url="http://www.kernel.org/"
+url="https://www.kernel.org/"
 license=('GPL2')
 makedepends=('bc'
     'docbook-xsl'
-    'elfutils'
+    'libelf'
+    'pahole'
     'git'
     'inetutils'
     'kmod'
-    'xmlto')
+    'xmlto'
+    'cpio'
+    'perl'
+    'tar'
+    'xz')
 options=('!strip')
 source=("https://www.kernel.org/pub/linux/kernel/v5.x/linux-${_basekernel}.tar.xz"
         "https://www.kernel.org/pub/linux/kernel/v5.x/patch-${pkgver}.xz"
         # the main kernel config files
-        'config' 'config.aufs'
-        # AUFS Patches
-        "aufs5.x-rcN-${_aufs}.patch" 'aufs5-base.patch'
-        'aufs5-kbuild.patch'
-        'aufs5-loopback.patch'
-        'aufs5-mmap.patch'
-        'aufs5-standalone.patch'
-        'tmpfs-idr.patch'
-        'vfs-ino.patch'
+        'config' 'config.anbox'
         # ARCH Patches
         '0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch'
-        '0001-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_GUEST_CAPABILITIES-ioctl.patch'
-        '0001-iwlwifi-Make-some-Killer-Wireless-AC-1550-cards-working-again.patch'
-        '0001-pci-edr-log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-events.patch'
+        '0002-HID-quirks-Add-Apple-Magic-Trackpad-2-to-hid_have_special_driver-list.patch'
+        # Temp Fixes
         # MANJARO Patches
-        '0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
-        '0001-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
-        '0001-futex.patch'
-        '0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch'
-        '0002-apparmor-af_unix-mediation.patch'
-        '0003-apparmor-fix-use-after-free-in-sk_peer_label.patch'
-        '0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch'
+        '0101-i2c-nuvoton-nc677x-hwmon-driver.patch'
+        '0102-iomap-iomap_bmap-should-accept-unwritten-maps.patch'
+        '0103-futex.patch'
+        '0104-revert-xhci-Add-support-for-Renesas-controller-with-memory.patch'
+        '0105-ucsi-acpi.patch'
+        '0106-ucsi.patch'
+        '0107-quirk-kernel-org-bug-210681-firmware_rome_error.patch'
+        # Lenovo + AMD
+        '0302-lenovo-wmi2.patch'
         # Bootsplash
-        '0001-bootsplash.patch'
-        '0002-bootsplash.patch'
-        '0003-bootsplash.patch'
-        '0004-bootsplash.patch'
-        '0005-bootsplash.patch'
-        '0006-bootsplash.patch'
-        '0007-bootsplash.patch'
-        '0008-bootsplash.patch'
-        '0009-bootsplash.patch'
-        '0010-bootsplash.patch'
-        '0011-bootsplash.patch'
-        '0012-bootsplash.patch'
-        '0013-bootsplash.patch'
-	#mbp
-	'2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch'
-	'3001-applesmc-convert-static-structures-to-drvdata.patch'
-	'3002-applesmc-make-io-port-base-addr-dynamic.patch'
-	'3003-applesmc-switch-to-acpi_device-from-platform.patch'
-	'3004-applesmc-key-interface-wrappers.patch'
-	'3005-applesmc-basic-mmio-interface-implementation.patch'
-	'3006-applesmc-fan-support-on-T2-Macs.patch'
-	'4001-touchpad.patch'
-	'4002-keyboard-backlight.patch'
-	'5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
-	'5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
-    '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
-    '7001-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch'
-	'sphinx-workaround.patch'
-	'wifi.patch')
-sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
-            '63e25e02432839714a3173154792930d0d80940d31cef0f4370081538f6c2bbc'
-            '4a22919045ea07c02ad0b78d14151ffd64be25eed6a0b2b9a018b6650c8391fb'
-            'b44d81446d8b53d5637287c30ae3eb64cae0078c3fbc45fcf1081dd6699818b5'
-            'd9a9d1a3410c82cfaa282dd139429bedf4fa07dde904eefcf3ac053d70ad2770'
-            'a320441bd4540eaf6ed10bbcfb9714bd6d358852aacf0da63330c40a1ad3732c'
-            '2ccc807cc6f0fc21f8e23e2e9fd080eb1bc12c3450779e7025ebeaeee2ecffb4'
-            '842d2cb05d5796479654634a3cc6623513cefbfdf135a1471dbbfa994166ec14'
-            '499d25d110f9867e6aa3a9eb085005d7e59795ab4e0023d6fce21e7b8c21f383'
-            '3e45b6d925fc7490ce6597b7d353dd7a8e0681dd192e241f8c6491341673e30d'
-            '9e7ce0431a786444e95e05dafde2d75387fb75d0709dcc807915d638879701cd'
-            '20abad2643c635210c925c3ce3a12eb31f813819d6e661c6d99d9cc3163fbef7'
-            '7685d526bbdbfa795986591a70071c960ff572f56d3501774861728a9df8664c'
-            '095804fb1045f6ccb52825d0d8c3aad1237e919f30586034267918a15d1249f6'
-            'bdd0344427007d11412c37294559dc71090dfd0b0e6bd4b7008f32810ba797c4'
-            'd1aba2b46e810374e49296760959da48e58d88c36e377479a54e7636e1ba7dc0'
-            '0556859a8168c8f7da9af8e2059d33216d9e5378d2cac70ca54c5ff843fa5add'
+        '0401-revert-fbcon-remove-now-unusued-softback_lines-cursor-argument.patch'        
+        '0402-revert-fbcon-remove-no-op-fbcon_set_origin.patch'
+        '0403-revert-fbcon-remove-soft-scrollback-code.patch'
+        '0501-bootsplash.patch'
+        '0502-bootsplash.patch'
+        '0503-bootsplash.patch'
+        '0504-bootsplash.patch'
+        '0505-bootsplash.patch'
+        '0506-bootsplash.patch'
+        '0507-bootsplash.patch'
+        '0508-bootsplash.patch'
+        '0509-bootsplash.patch'
+        '0510-bootsplash.patch'
+        '0511-bootsplash.patch'
+        '0512-bootsplash.patch'
+        '0513-bootsplash.gitpatch'
+        # mbp
+        '2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch'
+        '3001-applesmc-convert-static-structures-to-drvdata.patch'
+        '3002-applesmc-make-io-port-base-addr-dynamic.patch'
+        '3003-applesmc-switch-to-acpi_device-from-platform.patch'
+        '3004-applesmc-key-interface-wrappers.patch'
+        '3005-applesmc-basic-mmio-interface-implementation.patch'
+        '3006-applesmc-fan-support-on-T2-Macs.patch'
+        '4001-HID-apple-Add-support-for-keyboard-backlight-on-supp.patch'
+        '4002-HID-apple-Add-support-for-MacbookAir8-1-keyboard-tra.patch'
+        '4003-HID-apple-Add-support-for-MacBookPro15-2-keyboard-tr.patch'
+        '4004-HID-apple-Add-support-for-MacBookPro15-1-keyboard-tr.patch'
+        '4005-HID-apple-Add-support-for-MacBookPro15-4-keyboard-tr.patch'
+        '4006-HID-apple-Add-support-for-MacBookPro16-2-keyboard-tr.patch'
+        '4007-HID-apple-Add-support-for-MacBookPro16-3-keyboard-tr.patch'
+        '4008-HID-apple-Add-support-for-MacBookAir9-1-keyboard-tra.patch'
+        '4009-HID-apple-Add-support-for-MacBookPro16-1-keyboard-tr.patch'
+        '5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch'
+        '5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch'
+        '6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch'
+        '7001-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch'
+        '8001-brcmfmac-Add-initial-support-for-the-BRCM4355.patch'
+        '8002-brcmfmac-Add-initial-support-for-the-BRCM4377.patch')
+
+sha256sums=('dcdf99e43e98330d925016985bfbc7b83c66d367b714b2de0cbbfcbf83d8ca43'
+            'b618995c9b9e0300aa7a8f1b630b9bad10b9898977b5d655617dcc6a30913d15'
+            '53e87f321c1f861dabb4a71efacb446e09177dc0d1f3582c856904d158601dff'
+            'fc896e5b00fad732d937bfb7b0db41922ecdb3a488bc1c1b91b201e028eed866'
+            '986f8d802f37b72a54256f0ab84da83cb229388d58c0b6750f7c770818a18421'
+            'df5843818f1571841e1a8bdbe38d7f853d841f38de46d6a6a5765de089495578'
+            '7823d7488f42bc4ed7dfae6d1014dbde679d8b862c9a3697a39ba0dae5918978'
             '95745075edd597caa92b369cfbcd11a04c9e3c88c0c987c70114924e1e01df5c'
-            '78dde51123a21ec5efe9c420b309d03263001dafd8684f71c167f02e3f504f9e'
-            '98202b8ad70d02d86603294bae967874fa7b18704b5c7b867568b0fd33a08921'
-            '5cbbf3db9ea3205e9b89fe3049bea6dd626181db0cb0dc461e4cf5a400c68dd6'
-            'c7dbec875d0c1d6782c037a1dcefff2e5bdb5fc9dffac1beea07dd8c1bdef1d7'
-            '77746aea71ffb06c685e7769b49c78e29af9b2e28209cd245e95d9cbb0dba3c9'
-            'a504f6cf84094e08eaa3cc5b28440261797bf4f06f04993ee46a20628ff2b53c'
+            'b302ba6c5bbe8ed19b20207505d513208fae1e678cf4d8e7ac0b154e5fe3f456'
+            '83b5684223309809393bdffc5122924cb9940403d682a887b0aa6524015df973'
+            'e9ca3a8398360fa5d8d0deb5f0c0ca3d174865bd13c91eb6e0232cdbcdb2258b'
+            '6446e388c0e13290fd99137539c6d3089994313a3a0c00305dea83faf4951137'
+            '5e804e1f241ce542f3f0e83d274ede6aa4b0539e510fb9376f8106e8732ce69b'
+            '1d58ef2991c625f6f0eb33b4cb8303932f53f1c4694e42bae24c9cd36d2ad013'
+            '2b11905b63b05b25807dd64757c779da74dd4c37e36d3f7a46485b1ee5a9d326'
+            '94a8538251ad148f1025cc3de446ce64f73dc32b01815426fb159c722e8fa5bc'
+            '1f18c5c10a3c63e41ecd05ad34cd9f6653ba96e9f1049ce2b7bb6da2578ae710'
+            '59202940d4f12bad23c194a530edc900e066866c9945e39748484a6545af96de'
             'e096b127a5208f56d368d2cb938933454d7200d70c86b763aa22c38e0ddb8717'
             '8c1c880f2caa9c7ae43281a35410203887ea8eae750fe8d360d0c8bf80fcc6e0'
             '1144d51e5eb980fceeec16004f3645ed04a60fac9e0c7cf88a15c5c1e7a4b89e'
@@ -115,21 +121,28 @@ sha256sums=('de8163bb62f822d84f7a3983574ec460060bf013a78ff79cd7c979ff1ec1d7e0'
             '27471eee564ca3149dd271b0817719b5565a9594dc4d884fe3dc51a5f03832bc'
             '60e295601e4fb33d9bf65f198c54c7eb07c0d1e91e2ad1e0dd6cd6e142cb266d'
             '035ea4b2a7621054f4560471f45336b981538a40172d8f17285910d4e0e0b3ef'
-            '1c2363d3f577b58c5d6b2b7919b0d77a8615701adc36fdf31d63c46e61c73e01'
-            '25e1aac0d44d72e377f08e4f4b90351cffcacc0be63e02a4033cb99f10cc9fe7'
-            'c70118659c5cf6a5c7f060c941d46fdd3b1e6d28f2b62c24a941745f2b3c4732'
-            '3855aa07fab97d202900216951225b6952d7c716258a3c3727df8e6277289ee0'
-            '9e5e0b45fe007ed214049b26b44174ee8f61376076e80fd33bba9fdac001e157'
-            '3c8a361370ed3ee094e2c8af1ff5360fd78f24e387c250904031fb70e8f2bb6e'
-            '8e43d95104301913737e5d73860f0e21bb0e5e25dcfd0f16d48a0715b38c98a1'
-            'e1d72fdb0a7a66a6f3fc8afb6fe056f28cfa088c1cc9c799b93405b62a274b96'
-            '4bc378ac08542bec266f6569f8e21c7fdd140c0e2492a259454376281b1a3132'
-            '0318952f59efdce4dc72703adc764940db6fdff184960c27a23a80c3413d8a60'
-            'e632f2959efca848fd28acb5e278cc476f8fb54d70ca95272b0a76add47e474e'
-            'eb5134e6b7415528547120e661aa58d7125cc657e982c924989d7a63d253d85e'
-            'c00e29fc39848422049faa341134c236589a7f1c9654695fd19fd5d4f031c1b5'
-            '8cb21e0b3411327b627a9dd15b8eb773295a0d2782b1a41b2a8839d1b2f5778c'
-            '17f11a531e975f401449e5a0e230c596cdaff51c95a9e7b70bc7ce9455a1f0e1')
+            '786dfc22e4c6ece883e7dedd0ba3f6c14018584df95450b2cb78f3da8b01f7cb'
+            '4cd7002a6f5c40c5abacbb60221015f73b7b219a9adb133e003877f1d35ec81d'
+            '8d8401a99a9dfbc41aa2dc5b6a409a19860b1b918465e19de4a4ff18de075ea3'
+            '08d165106fe35b68a7b48f216566951a5db0baac19098c015bcc81c5fcba678d'
+            '459906cab172df9f6712a4168e7a5d529f85b2bb58a068f2d44746df14a6d27a'
+            '2827dab6eeb2d2a08034938024f902846b5813e967a0ea253dc1ea88315da383'
+            '62b7d5831960c5775cdea17d44011cfda790f78d833e9663cf522350ab3643b6'
+            '0200805d9151cd16135f48c699a0460c0f5b464dabe1b6d8e5a54d2f36ab2dbf'
+            '83f4be6849ba4d5f9fad647ad2eb78bf6409ee98a40ac62e8a5b80496233d70a'
+            '44bd3643b2b22fedc59d79511199f30ce6759fa0acdd9a66262a53c5e046da6b'
+            'eb04a492197783643b3e72b1d0cf0e856290381997bd165a14fbc63ac1489c25'
+            '69d56d42473526f7dbd4fb18c5e1baafe4e6d32995b2506bd48ff981c53b5385'
+            '1deeacae1875cf9075b858a8bfb2463ebc531c9030b7c2ab46bbb8e4c3b974db'
+            '40eff5e88bb30c51c6b97e85c2e7b8dec5f97916f768e6c07618d9c5afe68574'
+            'cac035fe07663a319185c644c5b39b34bef89ada348881fa4a02d15290260445'
+            '45719489a9297d863ea60464e45a7e92f19606e527a7219d3582022e38439c0e'
+            '4d22727c1456e268de1c39ac73f2dc0c1630ac25aa66364d99f94e29eba5c6b9'
+            '7f41e52285bbdeeaf565e7a1e69860439a4cc302092b473301040f29fc2f5b64'
+            '9640178d6251686c980c30fc528b3d70beac6ce8246bf433506a3f843808326c'
+            '90a6012cdd8a64ede8e0bbaf7331960bd68f628e0973b65459188eb1ccb5b829'
+            '3a7baa28d5f45bdbff23e838133f2e3c6896412ffb5a919b4992a7b2d17469d9'
+            'edb804461e3820ef3397e1e236f7caabf906b6a13d03f406c8462ec476ecbbe5')
 prepare() {
   cd "${srcdir}/linux-${_basekernel}"
 
@@ -137,125 +150,21 @@ prepare() {
   msg "add upstream patch"
   patch -p1 -i "${srcdir}/patch-${pkgver}"
 
-  # add latest fixes from stable queue, if needed
-  # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
-  # enable only if you have "gen-stable-queue-patch.sh" executed before
-  #patch -Np1 -i "${srcdir}/prepatch-${_basekernel}.patch"
+  local src
+  for src in "${source[@]}"; do
+      src="${src%%::*}"
+      src="${src##*/}"
+      [[ $src = *.patch ]] || continue
+      msg2 "Applying patch: $src..."
+      patch -Np1 < "../$src"
+  done
 
-  # disable USER_NS for non-root users by default
-  msg2 "PATCH: 0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER"
-  patch -Np1 -i "${srcdir}/0001-ZEN-Add-sysctl-and-CONFIG-to-disallow-unprivileged-CLONE_NEWUSER.patch"
+  msg2 "0513-bootsplash"
+  git apply -p1 < "${srcdir}/0513-bootsplash.gitpatch"  
 
-  # other fixes by Arch
-  patch -Np1 -i "${srcdir}/0001-virt-vbox-Add-support-for-the-new-VBG_IOCTL_ACQUIRE_GUEST_CAPABILITIES-ioctl.patch"
-  patch -Np1 -i "${srcdir}/0001-iwlwifi-Make-some-Killer-Wireless-AC-1550-cards-working-again.patch"
-  patch -Np1 -i "${srcdir}/0001-pci-edr-log-only-ACPI_NOTIFY_DISCONNECT_RECOVER-events.patch"
-
-  # add patches for snapd
-  # https://gitlab.com/apparmor/apparmor-kernel/tree/5.2-outoftree
-  msg "add patches for snapd"
-  msg2 "0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules"
-  patch -Np1 -i "${srcdir}/0001-apparmor-patch-to-provide-compatibility-with-v2-net-rules.patch"
-  msg2 "0002-apparmor-af_unix-mediation"
-  patch -Np1 -i "${srcdir}/0002-apparmor-af_unix-mediation.patch"
-  msg2 "0003-apparmor-fix-use-after-free-in-sk_peer_label"
-  patch -Np1 -i "${srcdir}/0003-apparmor-fix-use-after-free-in-sk_peer_label.patch"
-  msg2 "0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets"
-  patch -Np1 -i "${srcdir}/0004-apparmor-fix-apparmor-mediating-locking-non-fs-unix-sockets.patch"
-
-  msg "nuvoton hwmon driver patch"
-  # https://twitter.com/vskye11/status/1216240051639791616
-  patch -Np1 -i '../0001-i2c-nuvoton-nc677x-hwmon-driver.patch'
-
-  # futex patch, https://lore.kernel.org/lkml/20200612185122.327860-1-andrealmeid@collabora.com/
-  msg2 "0001-futex.patch"
-  patch -Np1 -i "${srcdir}/0001-futex.patch"
-
-  # Add bootsplash - http://lkml.iu.edu/hypermail/linux/kernel/1710.3/01542.html
-  msg "Add bootsplash"
-  msg2 "0001-bootsplash."
-  patch -Np1 -i "${srcdir}/0001-bootsplash.patch"
-  msg2 "0002-bootsplash"
-  patch -Np1 -i "${srcdir}/0002-bootsplash.patch"
-  msg2 "0003-bootsplash"
-  patch -Np1 -i "${srcdir}/0003-bootsplash.patch"
-  msg2 "0004-bootsplash"
-  patch -Np1 -i "${srcdir}/0004-bootsplash.patch"
-  msg2 "0005-bootsplash"
-  patch -Np1 -i "${srcdir}/0005-bootsplash.patch"
-  msg2 "0006-bootsplash"
-  patch -Np1 -i "${srcdir}/0006-bootsplash.patch"
-  msg2 "0007-bootsplash"
-  patch -Np1 -i "${srcdir}/0007-bootsplash.patch"
-  msg2 "0008-bootsplash"
-  patch -Np1 -i "${srcdir}/0008-bootsplash.patch"
-  msg2 "0009-bootsplash"
-  patch -Np1 -i "${srcdir}/0009-bootsplash.patch"
-  msg2 "0010-bootsplash."
-  patch -Np1 -i "${srcdir}/0010-bootsplash.patch"
-  msg2 "0011-bootsplash"
-  patch -Np1 -i "${srcdir}/0011-bootsplash.patch"
-  msg2 "0012-bootsplash"
-  patch -Np1 -i "${srcdir}/0012-bootsplash.patch"
-  # use git-apply to add binary files
-  msg2 "0013-bootsplash"
-  git apply -p1 < "${srcdir}/0013-bootsplash.patch"
-
-  # add aufs5 support
-  msg "add aufs5 support"
-  msg2 "aufs5.x-rcN-${_aufs}"
-  patch -Np1 -i "${srcdir}/aufs5.x-rcN-${_aufs}.patch"
-  msg2 "aufs5-base"
-  patch -Np1 -i "${srcdir}/aufs5-base.patch"
-  msg2 "aufs5-kbuild"
-  patch -Np1 -i "${srcdir}/aufs5-kbuild.patch"
-  msg2 "aufs5-loopback"
-  patch -Np1 -i "${srcdir}/aufs5-loopback.patch"
-  msg2 "aufs5-mmap"
-  patch -Np1 -i "${srcdir}/aufs5-mmap.patch"
-  msg2 "aufs5-standalone"
-  patch -Np1 -i "${srcdir}/aufs5-standalone.patch"
-  msg2 "tmpfs-idr"
-  patch -Np1 -i "${srcdir}/tmpfs-idr.patch"
-  msg2 "vfs-ino"
-  patch -Np1 -i "${srcdir}/vfs-ino.patch"
-
-    #add mbp support
-  msg "add mbp support"
-  msg2 "drm-amd-display-force-link-rate"
-  patch -Np1 -i "${srcdir}/2001-drm-amd-display-Force-link_rate-as-LINK_RATE_RBR2-fo.patch"
-  msg2 "applesmc-convert-static-structures-to-drvdata"
-  patch -Np1 -i "${srcdir}/3001-applesmc-convert-static-structures-to-drvdata.patch"
-  msg2 "applesmc-switch-to-acpi-device-from-platform"
-  patch -Np1 -i "${srcdir}/3002-applesmc-make-io-port-base-addr-dynamic.patch"
-  msg2 "applesmc-switch-to-acpi_device-from-platform"
-  patch -Np1 -i "${srcdir}/3003-applesmc-switch-to-acpi_device-from-platform.patch"
-  msg2 "applesmc-key-interface-wrappers"
-  patch -Np1 -i "${srcdir}/3004-applesmc-key-interface-wrappers.patch"
-  msg2 "applesmc-basic-mmio-interface-implementation"
-  patch -Np1 -i "${srcdir}/3005-applesmc-basic-mmio-interface-implementation.patch"
-  msg2 "applesmc-fan-support-on-T2-Macs"
-  patch -Np1 -i "${srcdir}/3006-applesmc-fan-support-on-T2-Macs.patch"
-  msg2 "touchpad"
-  patch -Np1 -i "${srcdir}/4001-touchpad.patch"
-  msg2 "keyboard-backlight"
-  patch -Np1 -i "${srcdir}/4002-keyboard-backlight.patch"
-  msg2 "brcmfmac-move-brcmf_mp_device-into-its-own-header"
-  patch -Np1 -i "${srcdir}/5001-brcmfmac-move-brcmf_mp_device-into-its-own-header.patch"
-  msg2 "brcmfmac-Add-ability-to-manually-specify-FW-rambase"
-  patch -Np1 -i "${srcdir}/5002-brcmfmac-Add-ability-to-manually-specify-FW-rambase-.patch"
-  msg2 "media-uvcvideo-Add-support-for-Apple-T2-attached-iSi"
-  patch -Np1 -i "${srcdir}/6001-media-uvcvideo-Add-support-for-Apple-T2-attached-iSi.patch"
-  msg2 "drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch"
-  patch -Np1 -i "${srcdir}/7001-drm-i915-fbdev-Discard-BIOS-framebuffers-exceeding-h.patch"
-  msg2 "sphinx-workaround"
-  patch -Np1 -i "${srcdir}/sphinx-workaround.patch"
-  msg2 "wifi"
-  patch -Np1 -i "${srcdir}/wifi.patch"
-
+  msg2 "add config.anbox to config"
   cat "${srcdir}/config" > ./.config
-
-  cat "${srcdir}/config.aufs" >> ./.config
+  cat "${srcdir}/config.anbox" >> ./.config
 
   if [ "${_kernelname}" != "" ]; then
     sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"${_kernelname}\"|g" ./.config
@@ -291,15 +200,13 @@ build() {
   make ${MAKEFLAGS} LOCALVERSION= bzImage modules
 }
 
-package_linux57-mbp() {
+package_linux510-mbp() {
   pkgdesc="The ${pkgbase/linux/Linux} kernel and modules"
   depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=27')
   optdepends=('crda: to set the correct wireless channels of your country')
   provides=("linux=${pkgver}" VIRTUALBOX-GUEST-MODULES WIREGUARD-MODULE)
 
   cd "${srcdir}/linux-${_basekernel}"
-
-  KARCH=x86
 
   # get kernel version
   _kernver="$(make LOCALVERSION= kernelrelease)"
@@ -309,7 +216,7 @@ package_linux57-mbp() {
 
   # systemd expects to find the kernel here to allow hibernation
   # https://github.com/systemd/systemd/commit/edda44605f06a41fb86b7ab8128dcf99161d2344
-  cp arch/$KARCH/boot/bzImage "${pkgdir}/usr/lib/modules/${_kernver}/vmlinuz"
+  cp arch/x86/boot/bzImage "${pkgdir}/usr/lib/modules/${_kernver}/vmlinuz"
 
   # Used by mkinitcpio to name the kernel
   echo "${pkgbase}" | install -Dm644 /dev/stdin "${pkgdir}/usr/lib/modules/${_kernver}/pkgbase"
@@ -331,13 +238,11 @@ package_linux57-mbp() {
 
   # now we call depmod...
   depmod -b "${pkgdir}/usr" -F System.map "${_kernver}"
-
-  # add vmlinux
-  install -Dt "${pkgdir}/usr/lib/modules/${_kernver}/build" -m644 vmlinux
 }
 
-package_linux57-mbp-headers() {
+package_linux510-mbp-headers() {
   pkgdesc="Header files and scripts for building modules for ${pkgbase/linux/Linux} kernel"
+  depends=('gawk' 'python' 'libelf' 'pahole')
   provides=("linux-headers=$pkgver")
 
   cd "${srcdir}/linux-${_basekernel}"
@@ -345,27 +250,30 @@ package_linux57-mbp-headers() {
 
   install -Dt "${_builddir}" -m644 Makefile .config Module.symvers
   install -Dt "${_builddir}/kernel" -m644 kernel/Makefile
+  install -Dt "${_builddir}" -m644 vmlinux  
 
   mkdir "${_builddir}/.tmp_versions"
 
   cp -t "${_builddir}" -a include scripts
 
-  install -Dt "${_builddir}/arch/${KARCH}" -m644 "arch/${KARCH}/Makefile"
-  install -Dt "${_builddir}/arch/${KARCH}/kernel" -m644 "arch/${KARCH}/kernel/asm-offsets.s"
-  #install -Dt "${_builddir}/arch/${KARCH}/kernel" -m644 "arch/${KARCH}/kernel/macros.s"
+  install -Dt "${_builddir}/arch/x86" -m644 "arch/x86/Makefile"
+  install -Dt "${_builddir}/arch/x86/kernel" -m644 "arch/x86/kernel/asm-offsets.s"
 
-  cp -t "${_builddir}/arch/${KARCH}" -a "arch/${KARCH}/include"
+  cp -t "${_builddir}/arch/x86" -a "arch/x86/include"
 
   install -Dt "${_builddir}/drivers/md" -m644 drivers/md/*.h
   install -Dt "${_builddir}/net/mac80211" -m644 net/mac80211/*.h
 
-  # http://bugs.archlinux.org/task/13146
+  # https://bugs.archlinux.org/task/13146
   install -Dt "${_builddir}/drivers/media/i2c" -m644 drivers/media/i2c/msp3400-driver.h
 
-  # http://bugs.archlinux.org/task/20402
+  # https://bugs.archlinux.org/task/20402
   install -Dt "${_builddir}/drivers/media/usb/dvb-usb" -m644 drivers/media/usb/dvb-usb/*.h
   install -Dt "${_builddir}/drivers/media/dvb-frontends" -m644 drivers/media/dvb-frontends/*.h
   install -Dt "${_builddir}/drivers/media/tuners" -m644 drivers/media/tuners/*.h
+
+  # https://bugs.archlinux.org/task/71392
+  install -Dt "${_builddir}/drivers/iio/common/hid-sensors" -m644 drivers/iio/common/hid-sensors/*.h
 
   # add xfs and shmem for aufs building
   mkdir -p "${_builddir}"/{fs/xfs,mm}
@@ -383,42 +291,28 @@ package_linux57-mbp-headers() {
     rm -r "${_arch}"
   done
 
-  # remove files already in linux-docs package
+  # remove documentation files
   rm -r "${_builddir}/Documentation"
+
+  # strip scripts directory
+  local file
+  while read -rd '' file; do
+    case "$(file -bi "$file")" in
+      application/x-sharedlib\;*)      # Libraries (.so)
+        strip $STRIP_SHARED "$file" ;;
+      application/x-archive\;*)        # Libraries (.a)
+        strip $STRIP_STATIC "$file" ;;
+      application/x-executable\;*)     # Binaries
+        strip $STRIP_BINARIES "$file" ;;
+      application/x-pie-executable\;*) # Relocatable binaries
+        strip $STRIP_SHARED "$file" ;;
+    esac
+  done < <(find "${_builddir}" -type f -perm -u+x ! -name vmlinux -print0 2>/dev/null)
+  strip $STRIP_STATIC "${_builddir}/vmlinux"
+  
+  # remove unwanted files
+  find ${_builddir} -name '*.orig' -delete
 
   # Fix permissions
   chmod -R u=rwX,go=rX "${_builddir}"
-
-  # strip scripts directory
-  local _binary _strip
-  while read -rd '' _binary; do
-    case "$(file -bi "${_binary}")" in
-      *application/x-sharedlib*)  _strip="${STRIP_SHARED}"   ;; # Libraries (.so)
-      *application/x-archive*)    _strip="${STRIP_STATIC}"   ;; # Libraries (.a)
-      *application/x-executable*) _strip="${STRIP_BINARIES}" ;; # Binaries
-      *) continue ;;
-    esac
-    /usr/bin/strip ${_strip} "${_binary}"
-  done < <(find "${_builddir}/scripts" -type f -perm -u+w -print0 2>/dev/null)
 }
-
-package_linux57-mbp-docs() {
-  pkgdesc="Documentation for the $pkgdesc kernel"
-
-  cd "${srcdir}/linux-${_basekernel}"
-  local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
-
-  echo "Installing documentation..."
-  local src dst
-  while read -rd '' src; do
-    dst="${src#Documentation/}"
-    dst="$builddir/Documentation/${dst#output/}"
-    install -Dm644 "$src" "$dst"
-  done < <(find Documentation -name '.*' -prune -o ! -type d -print0)
-
-  echo "Adding symlink..."
-  mkdir -p "$pkgdir/usr/share/doc"
-  ln -sr "$builddir/Documentation" "$pkgdir/usr/share/doc/$pkgbase"
-}
-
-_server=cpx51
